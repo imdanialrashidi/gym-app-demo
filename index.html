@@ -8,6 +8,89 @@
     />
     <meta name="theme-color" content="#090B0A" />
     <meta name="color-scheme" content="dark" />
+    <!--
+      Critical shell. This paints before the JS bundle arrives, so the first frame is the
+      brand on ink instead of an empty white document. React replaces #boot when it commits.
+    -->
+    <style>
+      html {
+        background: #090b0a;
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+      }
+      #boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.15rem;
+        background: #090b0a;
+        color: #f5f6f2;
+        font-family: system-ui, "Segoe UI", Tahoma, sans-serif;
+        text-align: center;
+      }
+      #boot .boot-mark {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.35rem;
+        font-size: 1.15rem;
+        font-weight: 800;
+        line-height: 1;
+        white-space: nowrap;
+      }
+      #boot .boot-mark[lang="en"] {
+        font-family: "Arial Narrow", Impact, system-ui, sans-serif;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+      }
+      #boot em {
+        font-style: normal;
+        color: #c7ff3c;
+      }
+      #boot .boot-line {
+        position: relative;
+        width: 120px;
+        height: 1px;
+        overflow: hidden;
+        background: rgba(245, 246, 242, 0.11);
+      }
+      #boot .boot-line::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        width: 38%;
+        background: #c7ff3c;
+        animation: boot-slide 1s ease-in-out infinite alternate;
+      }
+      html[lang="fa"] #boot .boot-mark[lang="en"],
+      html[lang="en"] #boot .boot-mark[lang="fa"] {
+        display: none;
+      }
+      @keyframes boot-slide {
+        from {
+          transform: translateX(-110%);
+        }
+        to {
+          transform: translateX(310%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot .boot-line::after {
+          animation: none;
+        }
+      }
+    </style>
+    <noscript>
+      <style>
+        #boot {
+          display: none;
+        }
+      </style>
+    </noscript>
     <meta
       name="description"
       content="باشگاه امیر — یک دموی سینمایی تمرین بدنسازی. برنامه‌های فشار، کشش و پا با ثبت زندهٔ ست‌ها و تحلیل پیشرفت محلی. Amir’s Gym is available in English too."
@@ -54,6 +137,18 @@
     />
     <meta name="twitter:image" content="https://gym-app-demo.danialrashidi.ir/media/hero-og.jpg" />
 
+    <!--
+      The Persian face is the first thing every RTL screen needs. Preloading it starts the
+      download alongside the bundle instead of waiting for the stylesheet. English visitors
+      still fetch it, but the UI is Persian by default.
+    -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/src/assets/fonts/vazirmatn-arabic.woff2"
+    />
     <link
       rel="preload"
       as="image"
@@ -78,7 +173,13 @@
     <title>باشگاه امیر — فراتر از حدها بساز.</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="boot" aria-hidden="true">
+        <span class="boot-mark" lang="fa"><span>باشگاه</span> <em>امیر</em></span>
+        <span class="boot-mark" lang="en"><span>AMIR’S</span> <em>GYM</em></span>
+        <span class="boot-line"></span>
+      </div>
+    </div>
     <noscript>
       <div style="padding: 2rem; color: #f5f6f2; background: #090b0a; font-family: sans-serif" dir="rtl">
         <strong>باشگاه امیر</strong> برای تمرین به جاوااسکریپت نیاز دارد.
