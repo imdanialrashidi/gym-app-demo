@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { X } from 'lucide-react'
+import { useI18n } from '../lib/i18n'
 
 interface BottomSheetProps {
   open: boolean
@@ -25,6 +26,7 @@ export function BottomSheet({
   panelClassName = '',
 }: BottomSheetProps) {
   const reduce = useReducedMotion()
+  const { t } = useI18n()
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -131,7 +133,7 @@ export function BottomSheet({
                   type="button"
                   className="icon-button"
                   onClick={onClose}
-                  aria-label="Close panel"
+                  aria-label={t('Close panel', 'بستن پنل')}
                 >
                   <X size={18} strokeWidth={2} aria-hidden="true" />
                 </button>

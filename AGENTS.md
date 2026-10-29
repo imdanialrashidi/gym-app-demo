@@ -1,10 +1,11 @@
-# REP//LAB project instructions
+# Amir’s Gym project instructions
 
 ## What this project is
 
-REP//LAB is a frontend-only, mobile-first bodybuilding training demo. It contains a cinematic
-home dashboard, Push/Pull/Legs programs, a live workout logger, and local progress analytics.
-There is no backend, authentication, or external API integration.
+Amir’s Gym (formerly REP//LAB) is a frontend-only, mobile-first, bilingual bodybuilding training
+demo. It contains a cinematic home dashboard, Push/Pull/Legs programs, a live workout logger, and
+local progress analytics. Persian is the default language; English is one toggle away. There is no
+backend, authentication, or external API integration.
 
 ## Stack and commands
 
@@ -25,8 +26,12 @@ Run commands from the repository root:
 | Production build | `npm run build` |
 | Preview build | `npm run preview` |
 
-The local app is served under `/gym-app-demo/` by default. Use `VITE_BASE_PATH=/ npm run dev`
-for a root-site or custom-domain build.
+The app is served from the root of the custom domain
+(`https://gym-app-demo.danialrashidi.ir/`). Use `VITE_BASE_PATH=/gym-app-demo/` only when building
+for the bare `imdanialrashidi.github.io/gym-app-demo/` project-site URL.
+
+Copy is bilingual: English strings are the source and every new string needs a Persian twin via
+`t('English', 'فارسی')` from `src/lib/i18n.tsx`. Persian layout runs RTL and uses Vazirmatn.
 
 ## Working rules
 

@@ -44,7 +44,7 @@ export interface Program {
   headline: [string, string]
   kicker: string
   description: string
-  intensity: 'HIGH' | 'MAX' | 'BUILD'
+  intensity: string
   durationMin: number
   image: 'push' | 'pull' | 'legs'
   exercises: ProgramExercise[]
@@ -436,9 +436,9 @@ export const initialRecords: Record<string, number> = {
 }
 
 export const demoProfile = {
-  firstName: 'Dani',
-  fullName: 'Dani Rivera',
-  initials: 'DR',
+  firstName: 'Amir',
+  fullName: 'Amir Rezaei',
+  initials: 'AR',
   goal: 'Build lean mass',
   split: 'Push / Pull / Legs',
   started: 'Cycle 04',

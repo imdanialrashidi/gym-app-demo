@@ -1,8 +1,9 @@
 # Credits and licenses
 
-REP//LAB is a fictional demo. All UI, copy, and layout in this repository are original to this
-project. Photography is used under the Unsplash License. Other exercise photographs are
-illustrative training or equipment references rather than exact instructional demonstrations.
+Amir’s Gym (formerly REP//LAB) is a fictional demo. All UI, copy, and layout in this repository are
+original to this project. Photography is used under the Unsplash License. Other exercise
+photographs are illustrative training or equipment references rather than exact instructional
+demonstrations.
 
 ## Photography
 
@@ -38,7 +39,7 @@ used to build the local images.
 
 ## Fonts
 
-All three families are self-hosted in `src/assets/fonts/` under the SIL Open Font License 1.1.
+All four families are self-hosted in `src/assets/fonts/` under the SIL Open Font License 1.1.
 
 - **[Anton](https://fonts.google.com/specimen/Anton)** — Vernon Adams. OFL text:
   `src/assets/fonts/OFL-Anton.txt`
@@ -46,6 +47,8 @@ All three families are self-hosted in `src/assets/fonts/` under the SIL Open Fon
   `src/assets/fonts/OFL-Manrope.txt`
 - **[Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif)** — Instrument.
   OFL text: `src/assets/fonts/OFL-InstrumentSerif.txt`
+- **[Vazirmatn](https://github.com/rastikerdar/vazirmatn)** — Saber Rastikerdar. Persian UI face
+  used by the `lang="fa"` layer. OFL text: `src/assets/fonts/OFL-Vazirmatn.txt`
 
 ## Code and libraries
 

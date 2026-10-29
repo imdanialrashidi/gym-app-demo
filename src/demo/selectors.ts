@@ -8,6 +8,7 @@ import {
 } from './data'
 import type { Program, ProgramId } from './data'
 import type { AppState, SessionRecord } from './state'
+import type { Lang } from '../lib/i18n'
 import {
   addCalendarDays,
   formatShortDate,
@@ -88,7 +89,12 @@ export function getWeekStreak(sessions: SessionRecord[], now = Date.now()): numb
   return streak
 }
 
-export function getWeeklyStats(state: AppState, now = Date.now(), target = 4): WeeklyStats {
+export function getWeeklyStats(
+  state: AppState,
+  now = Date.now(),
+  target = 4,
+  lang: Lang = 'en',
+): WeeklyStats {
   const weekStart = startOfWeek(now)
   const weekEnd = addCalendarDays(weekStart, 7)
   const previousStart = addCalendarDays(weekStart, -7)
@@ -107,7 +113,7 @@ export function getWeeklyStats(state: AppState, now = Date.now(), target = 4): W
     const daySessions = sessionsInRange(state.sessions, dayStart, dayEnd)
     return {
       timestamp: dayStart,
-      label: formatWeekdayNarrow(dayStart),
+      label: formatWeekdayNarrow(dayStart, lang),
       volumeKg: daySessions.reduce((total, session) => total + session.volumeKg, 0),
       sessions: daySessions.length,
       isToday: isSameDay(dayStart, now),
@@ -133,6 +139,7 @@ function makeRangePoints(
   sessions: SessionRecord[],
   range: ProgressRange,
   now: number,
+  lang: Lang = 'en',
 ): ChartPoint[] {
   if (range === '7D') {
     const today = startOfDay(now)
@@ -142,8 +149,8 @@ function makeRangePoints(
       const bucket = sessionsInRange(sessions, start, end)
       return {
         key: `day-${start}`,
-        label: formatWeekdayNarrow(start),
-        fullLabel: formatShortDate(start),
+        label: formatWeekdayNarrow(start, lang),
+        fullLabel: formatShortDate(start, lang),
         volumeKg: Math.round(bucket.reduce((total, session) => total + session.volumeKg, 0)),
         sessions: bucket.length,
       }
@@ -160,14 +167,20 @@ function makeRangePoints(
       key: `week-${start}`,
       label:
         index === count - 1
-          ? 'NOW'
+          ? lang === 'fa'
+            ? 'اکنون'
+            : 'NOW'
           : range === '4W'
-            ? formatShortDate(start)
+            ? formatShortDate(start, lang)
             : `W${String(index + 1).padStart(2, '0')}`,
       fullLabel:
         index === count - 1
-          ? 'CURRENT WEEK / IN PROGRESS'
-          : `WEEK OF ${formatShortDate(start)}`,
+          ? lang === 'fa'
+            ? 'هفتهٔ جاری / در جریان'
+            : 'CURRENT WEEK / IN PROGRESS'
+          : lang === 'fa'
+            ? `هفتهٔ ${formatShortDate(start, lang)}`
+            : `WEEK OF ${formatShortDate(start, lang)}`,
       volumeKg: Math.round(bucket.reduce((total, session) => total + session.volumeKg, 0)),
       sessions: bucket.length,
     }
@@ -178,8 +191,9 @@ export function getProgressSummary(
   state: AppState,
   range: ProgressRange,
   now = Date.now(),
+  lang: Lang = 'en',
 ): ProgressSummary {
-  const points = makeRangePoints(state.sessions, range, now)
+  const points = makeRangePoints(state.sessions, range, now, lang)
   const start =
     range === '7D'
       ? addCalendarDays(startOfDay(now), -6)

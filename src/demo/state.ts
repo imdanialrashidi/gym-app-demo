@@ -526,7 +526,7 @@ export function loadState(storage: StorageLike | null, now = Date.now()): AppSta
     const sanitized = sanitizeState(parsed)
     return sanitized ?? createSeedState(now)
   } catch (error) {
-    console.warn('REP//LAB: stored demo data was unreadable; starting a clean demo.', error)
+    console.warn('Amir’s Gym: stored demo data was unreadable; starting a clean demo.', error)
     return createSeedState(now)
   }
 }
@@ -536,7 +536,7 @@ export function saveState(storage: StorageLike | null, state: AppState): void {
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch (error) {
-    console.warn('REP//LAB: could not persist demo data in this browser.', error)
+    console.warn('Amir’s Gym: could not persist demo data in this browser.', error)
   }
 }
 

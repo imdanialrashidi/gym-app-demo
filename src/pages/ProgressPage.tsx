@@ -30,7 +30,9 @@ import {
 } from '../demo/selectors'
 import type { ChartPoint, ProgressRange } from '../demo/selectors'
 import { useDemoState } from '../demo/AppState'
+import { localizeProgram, localizeRecord } from '../demo/localize'
 import { editorialPicture, exercisePicture, gymPicture, programPicture } from '../lib/media'
+import { useI18n } from '../lib/i18n'
 import {
   formatMinutes,
   formatRelativeDateTime,
@@ -43,18 +45,6 @@ interface ProgressPageProps {
   onOpenSettings: () => void
 }
 
-const ranges: Array<{ id: ProgressRange; label: string; description: string }> = [
-  { id: '7D', label: '7D', description: 'Last 7 days' },
-  { id: '4W', label: '4W', description: 'Last 4 weeks' },
-  { id: '12W', label: '12W', description: 'Last 12 weeks' },
-]
-
-const RANGE_LABEL: Record<ProgressRange, string> = {
-  '7D': 'LAST 7 DAYS',
-  '4W': 'LAST 4 WEEKS',
-  '12W': 'LAST 12 WEEKS',
-}
-
 function VolumeTooltip({
   active,
   payload,
@@ -62,15 +52,16 @@ function VolumeTooltip({
   active?: boolean
   payload?: ReadonlyArray<{ payload?: ChartPoint; value?: number }>
 }) {
+  const { lang, t } = useI18n()
   if (!active || !payload?.length) return null
   const point = payload[0]?.payload
   if (!point) return null
   return (
     <div className="chart-tooltip">
       <span>{point.fullLabel}</span>
-      <strong>{formatVolumeKg(point.volumeKg)}</strong>
+      <strong>{formatVolumeKg(point.volumeKg, 0, lang)}</strong>
       <small>
-        {point.sessions} session{point.sessions === 1 ? '' : 's'}
+        {point.sessions} {point.sessions === 1 ? t('session', 'جلسه') : t('sessions', 'جلسه')}
       </small>
     </div>
   )
@@ -87,7 +78,8 @@ function RecentSessionRow({
   expanded: boolean
   onToggle: () => void
 }) {
-  const program = getProgramForSession(session)
+  const { lang, t } = useI18n()
+  const program = localizeProgram(getProgramForSession(session), lang)
   const reduce = useReducedMotion()
   return (
     <article className={`activity-row ${expanded ? 'is-expanded' : ''}`}>
@@ -98,7 +90,11 @@ function RecentSessionRow({
         aria-expanded={expanded}
       >
         <span className="sr-only">
-          {expanded ? 'Collapse' : 'Expand'} session details. Press enter to toggle.
+          {expanded ? t('Collapse', 'بستن') : t('Expand', 'باز کردن')}{' '}
+          {t(
+            'session details. Press enter to toggle.',
+            'جزئیات جلسه. برای باز و بسته کردن، کلید Enter را بزنید.',
+          )}
         </span>
         <span className="activity-row__index">{String(index + 1).padStart(2, '0')}</span>
         <ResponsivePhoto
@@ -110,14 +106,18 @@ function RecentSessionRow({
           loading="lazy"
         />
         <span className="activity-row__main">
-          <span className="activity-row__name">{program.label} protocol</span>
-          <span className="activity-row__date">{formatRelativeDateTime(session.completedAt)}</span>
+          <span className="activity-row__name">
+            {t(`${program.label} protocol`, `پروتکل ${program.label}`)}
+          </span>
+          <span className="activity-row__date">
+            {formatRelativeDateTime(session.completedAt, Date.now(), lang)}
+          </span>
         </span>
         <span className="activity-row__stats">
-          <strong>{formatVolumeKg(session.volumeKg, 1)}</strong>
+          <strong>{formatVolumeKg(session.volumeKg, 1, lang)}</strong>
           <span>
-            {formatMinutes(session.durationSec)} / {session.setsCompleted}{' '}
-            {session.setsCompleted === 1 ? 'set' : 'sets'}
+            {formatMinutes(session.durationSec, lang)} / {session.setsCompleted}{' '}
+            {session.setsCompleted === 1 ? t('set', 'ست') : t('sets', 'ست')}
           </span>
         </span>
         <ChevronDown
@@ -147,11 +147,15 @@ function RecentSessionRow({
                 )
                 return (
                   <div className="activity-exercise" key={exercise.exerciseId}>
-                    <span>{exercise.name}</span>
+                    <span>{exerciseDetails?.name ?? exercise.name}</span>
                     <span>
-                      {best ? `${formatWeight(best.weight)} KG × ${best.reps}` : '—'}
+                      {best
+                        ? `${formatWeight(best.weight)} ${t('KG', 'کیلوگرم')} × ${best.reps}`
+                        : '—'}
                     </span>
-                    <span>{exercise.sets.length} logged</span>
+                    <span>
+                      {exercise.sets.length} {t('logged', 'ثبت‌شده')}
+                    </span>
                     {exerciseDetails ? (
                       <ResponsivePhoto
                         sources={exercisePicture(exerciseDetails.image)}
@@ -175,14 +179,27 @@ function RecentSessionRow({
 
 export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
   const { state } = useDemoState()
+  const { lang, t } = useI18n()
   const [range, setRange] = useState<ProgressRange>('4W')
   const [expandedSession, setExpandedSession] = useState<string | null>(null)
   const reduce = useReducedMotion()
   const now = useMemo(() => Date.now(), [])
 
-  const summary = getProgressSummary(state, range, now)
-  const weekly = getWeeklyStats(state, now)
-  const recordCards = getRecordCards(state)
+  const ranges: Array<{ id: ProgressRange; label: string; description: string }> = [
+    { id: '7D', label: t('7D', '7 روز'), description: t('Last 7 days', '7 روز اخیر') },
+    { id: '4W', label: t('4W', '4 هفته'), description: t('Last 4 weeks', '4 هفتهٔ اخیر') },
+    { id: '12W', label: t('12W', '12 هفته'), description: t('Last 12 weeks', '12 هفتهٔ اخیر') },
+  ]
+
+  const rangeLabel: Record<ProgressRange, string> = {
+    '7D': t('LAST 7 DAYS', '7 روز اخیر'),
+    '4W': t('LAST 4 WEEKS', '4 هفتهٔ اخیر'),
+    '12W': t('LAST 12 WEEKS', '12 هفتهٔ اخیر'),
+  }
+
+  const summary = getProgressSummary(state, range, now, lang)
+  const weekly = getWeeklyStats(state, now, 4, lang)
+  const recordCards = getRecordCards(state).map((record) => localizeRecord(record, lang))
   const recentSessions = getRecentSessions(state, 5)
   const allTime = getAllTimeStats(state)
   const volumeTonnes = summary.totalVolumeKg / 1000
@@ -190,34 +207,45 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
   const chartTickInterval = range === '12W' ? 1 : 0
   const featuredRecord = recordCards[0]
   const secondaryRecords = recordCards.slice(1)
+  const totalVolumeLabel = formatVolumeKg(summary.totalVolumeKg, 1, lang)
+  const peakVolumeLabel = formatVolumeKg(summary.peakVolumeKg, 1, lang)
+  const nowTick = t('NOW', 'اکنون')
+  const activeRangeLabel = rangeLabel[range]
 
   return (
     <div className="progress-page">
-      <MobilePageHeader section="PROGRESS / 03" onOpenSettings={onOpenSettings} />
+      <MobilePageHeader section={t('PROGRESS / 03', 'پیشرفت / 03')} onOpenSettings={onOpenSettings} />
       <main className="page-main">
         <div className="shell">
           <Reveal className="page-intro progress-intro">
             <p className="section-kicker">
-              <span className="section-kicker__index">03</span> PERFORMANCE ARCHIVE
+              <span className="section-kicker__index">03</span> {t('PERFORMANCE ARCHIVE', 'آرشیو عملکرد')}
             </p>
             <h1 className="page-title">
-              THE <em>proof.</em>
+              {t('THE ', '')}
+              <em>{t('proof.', 'مدرک.')}</em>
             </h1>
             <p className="page-lede">
-              The scale is noisy. The log isn’t. Track volume, consistency and the lifts that
-              matter — one honest session at a time.
+              {t(
+                'The scale is noisy. The log isn’t. Track volume, consistency and the lifts that matter — one honest session at a time.',
+                'ترازو نویز دارد، دفتر ثبت نه. حجم، ثبات و حرکت‌هایی را که مهم‌اند ثبت کن — هر بار یک جلسهٔ صادقانه.',
+              )}
             </p>
             <div className="progress-intro__stamp" aria-hidden="true">
-              <span>LOG</span>
+              <span>{t('LOG', 'دفتر')}</span>
               <span>{String(allTime.totalSessions).padStart(2, '0')}</span>
-              <span>ENTRIES</span>
+              <span>{t('ENTRIES', 'ثبت')}</span>
             </div>
           </Reveal>
         </div>
 
         <div className="shell progress-content">
           <section aria-labelledby="volume-heading">
-            <div className="filter-row progress-ranges" role="group" aria-label="Select progress time range">
+            <div
+              className="filter-row progress-ranges"
+              role="group"
+              aria-label={t('Select progress time range', 'انتخاب بازهٔ زمانی پیشرفت')}
+            >
               {ranges.map((option) => {
                 const active = option.id === range
                 return (
@@ -240,24 +268,27 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                   </button>
                 )
               })}
-              <span className="progress-ranges__label">{RANGE_LABEL[range]}</span>
+              <span className="progress-ranges__label">{activeRangeLabel}</span>
             </div>
 
             <Reveal className="chart-panel">
               <div className="chart-panel__head">
                 <div>
                   <p className="micro-label" id="volume-heading">
-                    TRAINING VOLUME / {RANGE_LABEL[range]}
+                    {t(
+                      `TRAINING VOLUME / ${activeRangeLabel}`,
+                      `حجم تمرین / ${activeRangeLabel}`,
+                    )}
                   </p>
                   <div className="chart-panel__value">
-                    <CountUp value={volumeTonnes} decimals={1} suffix="T" />
-                    <span className="chart-panel__value-label">MOVED</span>
+                    <CountUp value={volumeTonnes} decimals={1} suffix={t('T', ' تن')} />
+                    <span className="chart-panel__value-label">{t('MOVED', 'جابه‌جا شده')}</span>
                   </div>
                 </div>
                 <div className="chart-panel__aside">
                   <span className={`delta-chip delta-chip--large ${delta !== null && delta < 0 ? 'is-down' : ''}`}>
                     {delta === null ? (
-                      'BASELINE'
+                      t('BASELINE', 'مبنا')
                     ) : (
                       <>
                         {delta >= 0 ? (
@@ -270,9 +301,11 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                       </>
                     )}
                   </span>
-                  <span className="chart-panel__delta-copy">VS MATCHED PRIOR</span>
+                  <span className="chart-panel__delta-copy">
+                    {t('VS MATCHED PRIOR', 'در مقایسه با بازهٔ قبل')}
+                  </span>
                   <span className="chart-panel__peak">
-                    PEAK / {formatVolumeKg(summary.peakVolumeKg, 1)}
+                    {t(`PEAK / ${peakVolumeLabel}`, `اوج / ${peakVolumeLabel}`)}
                   </span>
                 </div>
               </div>
@@ -280,10 +313,10 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
               <div
                 className="volume-chart"
                 role="img"
-                aria-label={`Training volume for the ${RANGE_LABEL[range].toLowerCase()}: ${formatVolumeKg(
-                  summary.totalVolumeKg,
-                  1,
-                )} across ${summary.sessionCount} sessions.`}
+                aria-label={t(
+                  `Training volume for the ${activeRangeLabel.toLowerCase()}: ${totalVolumeLabel} across ${summary.sessionCount} sessions.`,
+                  `حجم تمرین در ${activeRangeLabel}: ${totalVolumeLabel} در ${summary.sessionCount} جلسه.`,
+                )}
               >
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
@@ -323,7 +356,7 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                     />
                     {range !== '7D' ? (
                       <ReferenceLine
-                        x="NOW"
+                        x={nowTick}
                         stroke="rgba(199,255,60,0.28)"
                         strokeDasharray="3 5"
                       />
@@ -355,28 +388,37 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
 
               <div className="chart-panel__legend">
                 <span>
-                  <span className="legend-dot" aria-hidden="true" /> VOLUME / KG
+                  <span className="legend-dot" aria-hidden="true" /> {t('VOLUME / KG', 'حجم / کیلوگرم')}
                 </span>
-                <span>{summary.sessionCount} SESSIONS</span>
-                <span>{summary.totalSets} SETS</span>
+                <span>
+                  {summary.sessionCount} {t('SESSIONS', 'جلسه')}
+                </span>
+                <span>
+                  {summary.totalSets} {t('SETS', 'ست')}
+                </span>
               </div>
             </Reveal>
 
             <div className="quick-stats">
               <Reveal className="quick-stat">
-                <span>SESSION COUNT</span>
+                <span>{t('SESSION COUNT', 'تعداد جلسه')}</span>
                 <CountUp value={summary.sessionCount} />
-                <small>{RANGE_LABEL[range]}</small>
+                <small>{activeRangeLabel}</small>
               </Reveal>
               <Reveal className="quick-stat" delay={0.06}>
-                <span>AVG DURATION</span>
-                <CountUp value={Math.round(summary.avgDurationSec / 60)} suffix="M" />
-                <small>PER SESSION</small>
+                <span>{t('AVG DURATION', 'میانگین مدت')}</span>
+                <CountUp
+                  value={Math.round(summary.avgDurationSec / 60)}
+                  suffix={t('M', '')}
+                />
+                <small>{t('PER SESSION', 'دقیقه در هر جلسه')}</small>
               </Reveal>
               <Reveal className="quick-stat" delay={0.12}>
-                <span>ALL-TIME HOURS</span>
+                <span>{t('ALL-TIME HOURS', 'مجموع ساعت')}</span>
                 <CountUp value={allTime.totalHours} decimals={1} />
-                <small>{allTime.totalSets} SETS LOGGED</small>
+                <small>
+                  {allTime.totalSets} {t('SETS LOGGED', 'ست ثبت‌شده')}
+                </small>
               </Reveal>
             </div>
           </section>
@@ -385,19 +427,25 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
             <div className="section-heading section-heading--row">
               <div>
                 <p className="section-kicker">
-                  <span className="section-kicker__index">01</span> THE RHYTHM
+                  <span className="section-kicker__index">01</span> {t('THE RHYTHM', 'ریتم')}
                 </p>
                 <h2 id="consistency-heading" className="section-title">
-                  CONSISTENCY <em>compounds.</em>
+                  {t('CONSISTENCY ', 'ثبات ')}
+                  <em>{t('compounds.', 'جمع می‌شود.')}</em>
                 </h2>
               </div>
-              <span className="section-heading__aside">WEEKLY TARGET / {weekly.target}</span>
+              <span className="section-heading__aside">
+                {t(`WEEKLY TARGET / ${weekly.target}`, `هدف هفته / ${weekly.target}`)}
+              </span>
             </div>
 
             <Reveal className="consistency-feature">
               <ResponsivePhoto
                 sources={gymPicture()}
-                alt="A quiet, industrial strength gym floor."
+                alt={t(
+                  'A quiet, industrial strength gym floor.',
+                  'سالن تمرین خلوت و صنعتی با وزنه‌های آزاد.',
+                )}
                 className="consistency-feature__photo"
                 imgClassName="consistency-feature__img"
                 sizes="(min-width: 1024px) 1240px, 100vw"
@@ -405,28 +453,33 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
               />
               <span className="consistency-feature__scrim" aria-hidden="true" />
               <div className="consistency-feature__top">
-                <span className="tag tag--lime">CURRENT WEEK</span>
+                <span className="tag tag--lime">{t('CURRENT WEEK', 'هفتهٔ جاری')}</span>
                 <span className="consistency-feature__streak">
-                  {weekly.streakWeeks} WEEK STREAK
+                  {t(`${weekly.streakWeeks} WEEK STREAK`, `زنجیرهٔ ${weekly.streakWeeks} هفته`)}
                 </span>
               </div>
               <div className="consistency-feature__content">
                 <div className="consistency-feature__copy">
-                  <p className="micro-label">SHOW UP. ADD UP.</p>
+                  <p className="micro-label">{t('SHOW UP. ADD UP.', 'حاضر شو. جمع کن.')}</p>
                   <p className="consistency-feature__headline">
                     {weekly.activeDays}
-                    <span>/7</span> days of work
+                    <span>/7</span> {t('days of work', 'روز کار')}
                   </p>
                   <p className="consistency-feature__sub">
-                    {weekly.sessionsThisWeek} of {weekly.target} target sessions logged. The repeat
-                    is the result.
+                    {t(
+                      `${weekly.sessionsThisWeek} of ${weekly.target} target sessions logged. The repeat is the result.`,
+                      `${weekly.sessionsThisWeek} از ${weekly.target} جلسهٔ هدف ثبت شده. تکرار، خودِ نتیجه است.`,
+                    )}
                   </p>
                 </div>
                 <ProgressRing
                   value={Math.min(1, weekly.sessionsThisWeek / weekly.target)}
                   size={96}
                   strokeWidth={4}
-                  ariaLabel={`${weekly.sessionsThisWeek} of ${weekly.target} target sessions this week`}
+                  ariaLabel={t(
+                    `${weekly.sessionsThisWeek} of ${weekly.target} target sessions this week`,
+                    `${weekly.sessionsThisWeek} از ${weekly.target} جلسهٔ هدف در این هفته`,
+                  )}
                 >
                   <span className="consistency-feature__ring">
                     {Math.round(Math.min(1, weekly.sessionsThisWeek / weekly.target) * 100)}
@@ -448,7 +501,9 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                       } ${day.isFuture ? 'is-future' : ''}`}
                     >
                       <span className="consistency-bar__volume">
-                        {day.volumeKg > 0 ? `${Math.round(day.volumeKg / 100) / 10}T` : '—'}
+                        {day.volumeKg > 0
+                          ? `${Math.round(day.volumeKg / 100) / 10}${t('T', ' تن')}`
+                          : '—'}
                       </span>
                       <span className="consistency-bar__track" aria-hidden="true">
                         <motion.span
@@ -470,20 +525,24 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
             <div className="section-heading section-heading--row">
               <div>
                 <p className="section-kicker">
-                  <span className="section-kicker__index">02</span> PERSONAL RECORDS
+                  <span className="section-kicker__index">02</span> {t('PERSONAL RECORDS', 'رکوردهای شخصی')}
                 </p>
                 <h2 id="records-heading" className="section-title">
-                  BUILT <em>different.</em>
+                  {t('BUILT ', 'فرق ')}
+                  <em>{t('different.', 'می‌کند.')}</em>
                 </h2>
               </div>
-              <span className="section-heading__aside">ALL-TIME / KG</span>
+              <span className="section-heading__aside">{t('ALL-TIME / KG', 'مجموع / کیلوگرم')}</span>
             </div>
 
             <div className="records-grid">
               <Reveal className="record-feature">
                 <ResponsivePhoto
                   sources={editorialPicture('deadlift')}
-                  alt="Athlete preparing a heavy deadlift."
+                  alt={t(
+                    'Athlete preparing a heavy deadlift.',
+                    'ورزشکاری در حال آماده شدن برای یک ددلیفت سنگین.',
+                  )}
                   className="record-feature__photo"
                   imgClassName="record-feature__img"
                   sizes="(min-width: 1024px) 60vw, 100vw"
@@ -491,18 +550,21 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                 />
                 <span className="record-feature__scrim" aria-hidden="true" />
                 <div className="record-feature__content">
-                  <span className="tag">BIG THREE / PR</span>
+                  <span className="tag">{t('BIG THREE / PR', 'سه حرکت اصلی / رکورد')}</span>
                   <p className="record-feature__lift">{featuredRecord.label}</p>
                   <p className="record-feature__value">
                     <CountUp value={featuredRecord.weight} decimals={featuredRecord.weight % 1 === 0 ? 0 : 1} />
-                    <span className="record-feature__unit">KG</span>
+                    <span className="record-feature__unit">{t('KG', 'کیلوگرم')}</span>
                   </p>
                   <div className="record-feature__footer">
-                    <span>ALL-TIME BEST</span>
+                    <span>{t('ALL-TIME BEST', 'بهترین رکورد')}</span>
                     <span>
                       {featuredRecord.progress > 0
-                        ? `+${formatWeight(featuredRecord.progress)} KG THIS DEMO`
-                        : 'BASELINE RECORD'}
+                        ? t(
+                            `+${formatWeight(featuredRecord.progress)} KG THIS DEMO`,
+                            `+${formatWeight(featuredRecord.progress)} کیلوگرم در این دمو`,
+                          )
+                        : t('BASELINE RECORD', 'رکورد مبنا')}
                     </span>
                   </div>
                 </div>
@@ -520,14 +582,17 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                         value={record.weight}
                         decimals={record.weight % 1 === 0 ? 0 : 1}
                       />
-                      <span className="record-card__unit">KG</span>
+                      <span className="record-card__unit">{t('KG', 'کیلوگرم')}</span>
                     </p>
                     <div className="record-card__foot">
-                      <span>ALL-TIME</span>
+                      <span>{t('ALL-TIME', 'مجموع')}</span>
                       <span>
                         {record.progress > 0
-                          ? `+${formatWeight(record.progress)} THIS DEMO`
-                          : 'BASELINE'}
+                          ? t(
+                              `+${formatWeight(record.progress)} THIS DEMO`,
+                              `+${formatWeight(record.progress)} در این دمو`,
+                            )
+                          : t('BASELINE', 'مبنا')}
                       </span>
                     </div>
                     <div className="record-card__line" aria-hidden="true" />
@@ -541,13 +606,16 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
             <div className="section-heading section-heading--row">
               <div>
                 <p className="section-kicker">
-                  <span className="section-kicker__index">03</span> THE LOG
+                  <span className="section-kicker__index">03</span> {t('THE LOG', 'دفتر ثبت')}
                 </p>
                 <h2 id="activity-heading" className="section-title">
-                  RECENT <em>work.</em>
+                  {t('RECENT ', 'کارهای ')}
+                  <em>{t('work.', 'اخیر.')}</em>
                 </h2>
               </div>
-              <span className="section-heading__aside">{allTime.totalSessions} TOTAL</span>
+              <span className="section-heading__aside">
+                {t(`${allTime.totalSessions} TOTAL`, `مجموع ${allTime.totalSessions}`)}
+              </span>
             </div>
 
             {recentSessions.length > 0 ? (
@@ -566,26 +634,34 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
               </div>
             ) : (
               <div className="empty-state">
-                <p className="empty-state__title">The log is empty.</p>
-                <p>Finish a training session and it will show up here.</p>
+                <p className="empty-state__title">{t('The log is empty.', 'دفتر ثبت خالی است.')}</p>
+                <p>
+                  {t(
+                    'Finish a training session and it will show up here.',
+                    'یک جلسهٔ تمرین را تمام کن تا همین‌جا ثبت شود.',
+                  )}
+                </p>
                 <a href="#/workouts" className="btn btn--lime btn--compact">
-                  Enter the lab
+                  {t('Enter the lab', 'شروع تمرین')}
                 </a>
               </div>
             )}
             <p className="activity-footnote">
               <span className="status-dot" aria-hidden="true" />
-              SAMPLE DATA + SESSIONS YOU FINISH IN THIS BROWSER.
+              {t(
+                'SAMPLE DATA + SESSIONS YOU FINISH IN THIS BROWSER.',
+                'دادهٔ نمونه + جلسه‌هایی که در همین مرورگر تمام می‌کنی.',
+              )}
             </p>
           </section>
 
           <div className="progress-signoff">
             <div>
               <ArrowDownRight size={18} strokeWidth={1.8} aria-hidden="true" />
-              <p>SHOW UP AGAIN.</p>
+              <p>{t('SHOW UP AGAIN.', 'باز هم حاضر شو.')}</p>
             </div>
             <a href="#/workouts" className="text-action">
-              BACK TO TRAINING
+              {t('BACK TO TRAINING', 'برگشت به تمرین')}
               <ArrowUpRight size={15} strokeWidth={2} aria-hidden="true" />
             </a>
           </div>

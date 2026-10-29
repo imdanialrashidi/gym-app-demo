@@ -4,6 +4,7 @@ import { ResponsivePhoto } from './ResponsivePhoto'
 import { exercisePicture } from '../lib/media'
 import { useDemoState, useStartTraining } from '../demo/AppState'
 import type { Program, ProgramExercise } from '../demo/data'
+import { useI18n } from '../lib/i18n'
 import { formatWeight } from '../lib/time'
 
 interface ExerciseSheetProps {
@@ -16,6 +17,7 @@ interface ExerciseSheetProps {
 export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseSheetProps) {
   const { state } = useDemoState()
   const startTraining = useStartTraining()
+  const { t } = useI18n()
   if (!exercise || !program) return null
 
   const best = state.records[exercise.id]
@@ -24,14 +26,14 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
     <BottomSheet
       open={open}
       onClose={onClose}
-      eyebrow={`${program.label} / EXERCISE INDEX`}
+      eyebrow={`${program.label} / ${t('EXERCISE INDEX', 'نمایهٔ حرکات')}`}
       title={exercise.name}
       panelClassName="exercise-sheet"
     >
       <div className="exercise-sheet__photo">
         <ResponsivePhoto
           sources={exercisePicture(exercise.image)}
-          alt={`${exercise.name} training reference`}
+          alt={`${exercise.name} ${t('training reference', 'مرجع تمرین')}`}
           sizes="(min-width: 768px) 560px, 100vw"
           imgClassName="exercise-sheet__image"
           loading="lazy"
@@ -48,25 +50,27 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
 
         <dl className="exercise-sheet__stats">
           <div>
-            <dt>Working sets</dt>
+            <dt>{t('Working sets', 'ست‌های کاری')}</dt>
             <dd>{exercise.sets}</dd>
           </div>
           <div>
-            <dt>Target reps</dt>
+            <dt>{t('Target reps', 'تکرار هدف')}</dt>
             <dd>{exercise.reps}</dd>
           </div>
           <div>
-            <dt>Demo load</dt>
-            <dd>{formatWeight(exercise.weight)} kg</dd>
+            <dt>{t('Demo load', 'بار نمونه')}</dt>
+            <dd>
+              {formatWeight(exercise.weight)} {t('kg', 'کیلوگرم')}
+            </dd>
           </div>
           <div>
-            <dt>Rest</dt>
-            <dd>{exercise.rest}s</dd>
+            <dt>{t('Rest', 'استراحت')}</dt>
+            <dd>{t(`${exercise.rest}s`, `${exercise.rest} ثانیه`)}</dd>
           </div>
         </dl>
 
         <div className="exercise-sheet__cues">
-          <p className="micro-label text-muted">COACHING CUES</p>
+          <p className="micro-label text-muted">{t('COACHING CUES', 'نکات فرم')}</p>
           <ol>
             {exercise.cues.map((cue, index) => (
               <li key={cue}>
@@ -79,8 +83,10 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
 
         {best ? (
           <div className="exercise-sheet__record">
-            <span>ALL-TIME BEST SET</span>
-            <strong>{formatWeight(best)} KG</strong>
+            <span>{t('ALL-TIME BEST SET', 'بهترین ست تاریخ')}</span>
+            <strong>
+              {formatWeight(best)} {t('KG', 'کیلوگرم')}
+            </strong>
           </div>
         ) : null}
 
@@ -92,11 +98,16 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
             startTraining(program.id)
           }}
         >
-          {state.active ? 'Resume live session' : `Start ${program.label} protocol`}
+          {state.active
+            ? t('Resume live session', 'ادامهٔ جلسهٔ زنده')
+            : t(`Start ${program.label} protocol`, `شروع پروتکل ${program.label}`)}
           <ArrowUpRight size={17} strokeWidth={2.2} aria-hidden="true" />
         </button>
         <p className="exercise-sheet__fineprint">
-          Demo programming only. Adjust load and range to your body and experience.
+          {t(
+            'Demo programming only. Adjust load and range to your body and experience.',
+            'این برنامه فقط برای دمو است. بار و دامنهٔ حرکت را با بدن و تجربهٔ خودت تنظیم کن.',
+          )}
         </p>
       </div>
     </BottomSheet>

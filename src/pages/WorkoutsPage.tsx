@@ -11,9 +11,8 @@ import { ResponsivePhoto } from '../components/ResponsivePhoto'
 import { CountUp, Reveal } from '../components/MotionBits'
 import { ExerciseSheet } from '../components/ExerciseSheet'
 import {
-  exerciseLibrary,
+  exerciseById,
   muscleGroups,
-  programs,
 } from '../demo/data'
 import type { MuscleFilter, Program, ProgramExercise } from '../demo/data'
 import {
@@ -21,6 +20,13 @@ import {
   getUpNextProgram,
 } from '../demo/selectors'
 import { useDemoState, useElapsedSeconds, useStartTraining } from '../demo/AppState'
+import {
+  localizeMuscle,
+  localizeProgram,
+  useExerciseLibrary,
+  usePrograms,
+} from '../demo/localize'
+import { useI18n } from '../lib/i18n'
 import { exercisePicture, programPicture } from '../lib/media'
 import { formatShortDate, formatTimer, formatWeight } from '../lib/time'
 import { hrefFor } from '../lib/router'
@@ -48,9 +54,11 @@ function SplitCard({
   isActiveProgram: boolean
   hasActiveSession: boolean
 }) {
+  const { lang, t } = useI18n()
   const stats = getProgramFullStats(program)
   const reduce = useReducedMotion()
   const panelId = `split-panel-${program.id}`
+  const position = String(index + 1).padStart(2, '0')
 
   return (
     <article className={`split-card ${expanded ? 'is-expanded' : ''}`}>
@@ -72,9 +80,9 @@ function SplitCard({
         <span className="split-card__scrim" aria-hidden="true" />
         <span className="split-card__top">
           <span className="split-card__index">
-            SPLIT {String(index + 1).padStart(2, '0')} / {program.number}
+            {t(`SPLIT ${position} / ${program.number}`, `برنامه ${position} از ${program.number}`)}
           </span>
-          {isActiveProgram ? <span className="tag tag--lime">LIVE</span> : null}
+          {isActiveProgram ? <span className="tag tag--lime">{t('LIVE', 'زنده')}</span> : null}
         </span>
         <span className="split-card__main">
           <span className="split-card__name">{program.label}</span>
@@ -82,13 +90,21 @@ function SplitCard({
         </span>
         <span className="split-card__meta">
           <span>
-            <strong>{stats.totalSets}</strong> SETS
+            <strong>{stats.totalSets}</strong> {t('SETS', 'ست')}
           </span>
           <span>
-            <strong>{program.durationMin}</strong> MIN
+            <strong>{program.durationMin}</strong> {t('MIN', 'دقیقه')}
           </span>
           <span>
-            <strong>{program.intensity}</strong> INTENSITY
+            {lang === 'fa' ? (
+              <>
+                {t('INTENSITY', 'شدت')} <strong>{program.intensity}</strong>
+              </>
+            ) : (
+              <>
+                <strong>{program.intensity}</strong> {t('INTENSITY', 'شدت')}
+              </>
+            )}
           </span>
         </span>
         <span className="split-card__toggle" aria-hidden="true">
@@ -110,8 +126,8 @@ function SplitCard({
               <p className="split-card__description">{program.description}</p>
 
               <div className="split-card__list-heading">
-                <span className="micro-label">THE SESSION</span>
-                <span className="micro-label">LOAD / REPS / SETS</span>
+                <span className="micro-label">{t('THE SESSION', 'جلسه')}</span>
+                <span className="micro-label">{t('LOAD / REPS / SETS', 'وزن / تکرار / ست')}</span>
               </div>
 
               <ul className="split-exercise-list">
@@ -136,14 +152,19 @@ function SplitCard({
                       <span className="split-exercise__copy">
                         <span className="split-exercise__name">{exercise.name}</span>
                         <span className="split-exercise__meta">
-                          {exercise.equipment} · {exercise.rest}s rest
+                          {t(
+                            `${exercise.equipment} · ${exercise.rest}s rest`,
+                            `${exercise.equipment} · ${exercise.rest} ثانیه استراحت`,
+                          )}
                         </span>
                       </span>
                       <span className="split-exercise__prescription">
-                        <strong>{formatWeight(exercise.weight)} kg</strong>
+                        <strong>
+                          {formatWeight(exercise.weight)} {t('kg', 'کیلوگرم')}
+                        </strong>
                         {exercise.sets} × {exercise.reps}
                       </span>
-                      <span className="sr-only">View exercise details</span>
+                      <span className="sr-only">{t('View exercise details', 'دیدن جزئیات حرکت')}</span>
                       <ArrowUpRight
                         className="split-exercise__arrow"
                         size={15}
@@ -157,15 +178,25 @@ function SplitCard({
 
               <div className="split-card__cta-row">
                 <div>
-                  <p className="micro-label">DEMO LOAD / ADJUST AS NEEDED</p>
+                  <p className="micro-label">
+                    {t('DEMO LOAD / ADJUST AS NEEDED', 'وزن نمایشی / در صورت نیاز تنظیم کن')}
+                  </p>
                   <p className="split-card__note">
                     {hasActiveSession
-                      ? `Your ${program.label.toLowerCase()} plan is saved. Resume to edit, log and finish.`
-                      : 'Every working set is editable. Own the numbers.'}
+                      ? t(
+                          `Your ${program.label.toLowerCase()} plan is saved. Resume to edit, log and finish.`,
+                          `برنامهٔ ${program.label} ذخیره شده. برای ویرایش، ثبت و پایان ادامه بده.`,
+                        )
+                      : t(
+                          'Every working set is editable. Own the numbers.',
+                          'هر ست کاری قابل ویرایش است. عددها را خودت تعیین کن.',
+                        )}
                   </p>
                 </div>
                 <button type="button" className="btn btn--lime" onClick={onStart}>
-                  {hasActiveSession ? 'Resume live session' : `Start ${program.label}`}
+                  {hasActiveSession
+                    ? t('Resume live session', 'ادامهٔ جلسهٔ زنده')
+                    : t(`Start ${program.label}`, `شروع ${program.label}`)}
                   <ArrowUpRight size={17} strokeWidth={2.2} aria-hidden="true" />
                 </button>
               </div>
@@ -178,6 +209,9 @@ function SplitCard({
 }
 
 export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
+  const { lang, t } = useI18n()
+  const programs = usePrograms()
+  const exerciseLibrary = useExerciseLibrary()
   const { state } = useDemoState()
   const startTraining = useStartTraining()
   const [expandedId, setExpandedId] = useState<string | null>(null)
@@ -188,7 +222,7 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
   const [query, setQuery] = useState('')
   const now = useMemo(() => Date.now(), [])
   const reduce = useReducedMotion()
-  const upNext = getUpNextProgram(state)
+  const upNext = localizeProgram(getUpNextProgram(state), lang)
   const activeProgram = state.active
     ? programs.find((program) => program.id === state.active?.programId)
     : null
@@ -200,14 +234,22 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
     const needle = query.trim().toLowerCase()
     return exerciseLibrary.filter((exercise) => {
       const matchesMuscle = muscle === 'All' || exercise.muscle === muscle
-      const matchesQuery =
-        needle === '' ||
-        exercise.name.toLowerCase().includes(needle) ||
-        exercise.equipment.toLowerCase().includes(needle) ||
-        exercise.muscle.toLowerCase().includes(needle)
-      return matchesMuscle && matchesQuery
+      if (!matchesMuscle) return false
+      if (needle === '') return true
+      const english = exerciseById[exercise.id]
+      const haystack = [
+        exercise.name,
+        exercise.equipment,
+        localizeMuscle(exercise.muscle, lang),
+        english?.name ?? '',
+        english?.equipment ?? '',
+        localizeMuscle(exercise.muscle, 'en'),
+      ]
+        .join(' ')
+        .toLowerCase()
+      return haystack.includes(needle)
     })
-  }, [muscle, query])
+  }, [exerciseLibrary, lang, muscle, query])
 
   const openExercise = (exercise: ProgramExercise, program: Program) => {
     setSelectedExercise(exercise)
@@ -217,19 +259,21 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
 
   return (
     <div className="workouts-page">
-      <MobilePageHeader section="TRAIN / 02" onOpenSettings={onOpenSettings} />
+      <MobilePageHeader section={t('TRAIN / 02', 'تمرین / 02')} onOpenSettings={onOpenSettings} />
       <main className="page-main">
         <div className="shell">
           <Reveal className="page-intro">
             <p className="section-kicker">
-              <span className="section-kicker__index">02</span> TRAINING DIVISION
+              <span className="section-kicker__index">02</span> {t('TRAINING DIVISION', 'بخش تمرین')}
             </p>
             <h1 className="page-title">
-              THE <em>lab.</em>
+              {t('THE', 'آزمایشگاهِ')} <em>{t('lab.', 'تمرین.')}</em>
             </h1>
             <p className="page-lede">
-              Three splits. No wasted movement. Pick the session that meets the bar today — then
-              take it one honest rep past comfortable.
+              {t(
+                'Three splits. No wasted movement. Pick the session that meets the bar today — then take it one honest rep past comfortable.',
+                'سه برنامه. هیچ حرکت هدررفته‌ای نیست. جلسه‌ای را انتخاب کن که امروز از عهده‌اش برمی‌آیی — بعد یک تکرار صادقانه از مرز راحتی عبور کن.',
+              )}
             </p>
           </Reveal>
         </div>
@@ -239,7 +283,10 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
             <section className="split-hero" aria-labelledby="today-session-heading">
               <ResponsivePhoto
                 sources={programPicture(featured.image)}
-                alt={`${featured.label} training program`}
+                alt={t(
+                  `${featured.label} training program`,
+                  `برنامهٔ تمرینی ${featured.label}`,
+                )}
                 className="split-hero__photo"
                 imgClassName="split-hero__img"
                 sizes="(min-width: 1024px) 1240px, 100vw"
@@ -248,29 +295,41 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
               />
               <span className="split-hero__scrim" aria-hidden="true" />
               <div className="split-hero__top">
-                <span className="tag">{state.active ? 'SESSION LIVE' : 'UP NEXT'}</span>
-                <span className="split-hero__date">{formatShortDate(now)}</span>
+                <span className="tag">
+                  {state.active ? t('SESSION LIVE', 'جلسهٔ زنده') : t('UP NEXT', 'نوبت بعدی')}
+                </span>
+                <span className="split-hero__date">{formatShortDate(now, lang)}</span>
               </div>
               <div className="split-hero__content">
                 <div>
                   <p className="micro-label">
-                    {state.active ? `LIVE / ${formatTimer(elapsed)}` : 'TODAY / SPLIT SELECTED'}
+                    {state.active
+                      ? t(`LIVE / ${formatTimer(elapsed)}`, `زنده / ${formatTimer(elapsed)}`)
+                      : t('TODAY / SPLIT SELECTED', 'امروز / برنامهٔ انتخاب‌شده')}
                   </p>
                   <h2 id="today-session-heading" className="split-hero__title">
-                    {featured.label} <em>session.</em>
+                    {lang === 'fa' ? (
+                      <>
+                        <em>{t('session.', 'جلسهٔ')}</em> {featured.label}
+                      </>
+                    ) : (
+                      <>
+                        {featured.label} <em>{t('session.', 'جلسهٔ')}</em>
+                      </>
+                    )}
                   </h2>
                   <p className="split-hero__kicker">{featured.kicker}</p>
                 </div>
                 <div className="split-hero__bottom">
                   <div className="split-hero__stats">
                     <span>
-                      <strong>{featured.exercises.length}</strong> moves
+                      <strong>{featured.exercises.length}</strong> {t('moves', 'حرکت')}
                     </span>
                     <span>
-                      <strong>{featuredStats.totalSets}</strong> sets
+                      <strong>{featuredStats.totalSets}</strong> {t('sets', 'ست')}
                     </span>
                     <span>
-                      <strong>{featured.durationMin}</strong> min
+                      <strong>{featured.durationMin}</strong> {t('min', 'دقیقه')}
                     </span>
                   </div>
                   <button
@@ -278,7 +337,7 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
                     className="btn btn--lime split-hero__cta"
                     onClick={() => startTraining(featured.id)}
                   >
-                    {state.active ? 'Resume session' : 'Start training'}
+                    {state.active ? t('Resume session', 'ادامهٔ جلسه') : t('Start training', 'شروع تمرین')}
                     <ArrowUpRight size={18} strokeWidth={2.2} aria-hidden="true" />
                   </button>
                 </div>
@@ -291,14 +350,14 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
           <div className="section-heading section-heading--row">
             <div>
               <p className="section-kicker">
-                <span className="section-kicker__index">01</span> THE SPLITS
+                <span className="section-kicker__index">01</span> {t('THE SPLITS', 'برنامه‌ها')}
               </p>
               <h2 id="splits-heading" className="section-title">
-                PICK YOUR <em>battle.</em>
+                {t('PICK YOUR', 'میدانت را')} <em>{t('battle.', 'انتخاب کن.')}</em>
               </h2>
             </div>
             <span className="section-heading__aside">
-              {state.active ? 'ONE LIVE SESSION' : '3-DAY ROTATION'}
+              {state.active ? t('ONE LIVE SESSION', 'یک جلسهٔ زنده') : t('3-DAY ROTATION', 'چرخش 3 روزه')}
             </span>
           </div>
 
@@ -325,14 +384,15 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
           <div className="library-heading">
             <div>
               <p className="section-kicker">
-                <span className="section-kicker__index">02</span> THE INDEX
+                <span className="section-kicker__index">02</span> {t('THE INDEX', 'فهرست')}
               </p>
               <h2 id="library-heading" className="section-title">
-                EXERCISE <em>library.</em>
+                {t('EXERCISE', 'کتابخانهٔ')} <em>{t('library.', 'حرکات.')}</em>
               </h2>
             </div>
             <p className="library-count" aria-live="polite">
-              <CountUp value={filteredExercises.length} /> / {exerciseLibrary.length} shown
+              <CountUp value={filteredExercises.length} /> {t('/', 'از')} {exerciseLibrary.length}{' '}
+              {t('shown', 'حرکت')}
             </p>
           </div>
 
@@ -343,8 +403,8 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
                 type="search"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search movement or equipment"
-                aria-label="Search exercises"
+                placeholder={t('Search movement or equipment', 'جست‌وجوی حرکت یا وسیله')}
+                aria-label={t('Search exercises', 'جست‌وجوی حرکات')}
                 enterKeyHint="search"
                 autoComplete="off"
                 spellCheck={false}
@@ -354,14 +414,18 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
                   type="button"
                   className="search-field__clear"
                   onClick={() => setQuery('')}
-                  aria-label="Clear exercise search"
+                  aria-label={t('Clear exercise search', 'پاک کردن جست‌وجوی حرکات')}
                 >
                   <X size={15} strokeWidth={2} aria-hidden="true" />
                 </button>
               ) : null}
             </div>
 
-            <div className="filter-row" role="group" aria-label="Filter exercises by muscle group">
+            <div
+              className="filter-row"
+              role="group"
+              aria-label={t('Filter exercises by muscle group', 'فیلتر حرکات بر اساس گروه عضلانی')}
+            >
               {muscleGroups.map((group) => {
                 const activeFilter = muscle === group
                 return (
@@ -379,7 +443,7 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
                         transition={{ type: 'spring', stiffness: 480, damping: 38 }}
                       />
                     ) : null}
-                    <span>{group}</span>
+                    <span>{localizeMuscle(group, lang)}</span>
                   </button>
                 )
               })}
@@ -417,14 +481,21 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
                   />
                   <span className="exercise-tile__scrim" aria-hidden="true" />
                   <span className="exercise-tile__top">
-                    <span>{exercise.muscle}</span>
+                    <span>{localizeMuscle(exercise.muscle, lang)}</span>
                     <ArrowUpRight size={14} strokeWidth={1.8} aria-hidden="true" />
                   </span>
-                  <span className="sr-only">View {exercise.name} details</span>
+                  <span className="sr-only">
+                    {t(`View ${exercise.name} details`, `دیدن جزئیات ${exercise.name}`)}
+                  </span>
                   <span className="exercise-tile__bottom">
                     <span className="exercise-tile__name">{exercise.shortName}</span>
                     <span className="exercise-tile__meta">
-                      {best ? `${formatWeight(best)} KG BEST` : exercise.equipment}
+                      {best
+                        ? t(
+                            `${formatWeight(best)} KG BEST`,
+                            `رکورد ${formatWeight(best)} کیلوگرم`,
+                          )
+                        : exercise.equipment}
                     </span>
                   </span>
                 </button>
@@ -434,8 +505,15 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
 
           {filteredExercises.length === 0 ? (
             <div className="empty-state">
-              <p className="empty-state__title">Nothing in that corner of the lab.</p>
-              <p>Try another muscle group or reset the search.</p>
+              <p className="empty-state__title">
+                {t('Nothing in that corner of the lab.', 'در این گوشه از آزمایشگاه چیزی نیست.')}
+              </p>
+              <p>
+                {t(
+                  'Try another muscle group or reset the search.',
+                  'یک گروه عضلانی دیگر را امتحان کن یا جست‌وجو را از نو شروع کن.',
+                )}
+              </p>
               <button
                 type="button"
                 className="btn btn--ghost btn--compact"
@@ -444,7 +522,7 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
                   setMuscle('All')
                 }}
               >
-                Clear filters
+                {t('Clear filters', 'پاک کردن فیلترها')}
               </button>
             </div>
           ) : null}
@@ -452,11 +530,16 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
 
         <section className="workouts-footer shell">
           <div>
-            <span className="micro-label">THE LAB RULE / 001</span>
-            <p>Never sacrifice a good rep for a heavier number.</p>
+            <span className="micro-label">{t('THE LAB RULE / 001', 'قانون آزمایشگاه / 001')}</span>
+            <p>
+              {t(
+                'Never sacrifice a good rep for a heavier number.',
+                'هیچ‌وقت یک تکرار خوب را فدای عدد سنگین‌تر نکن.',
+              )}
+            </p>
           </div>
           <a href={hrefFor('/progress')} className="text-action">
-            REVIEW PROGRESS
+            {t('REVIEW PROGRESS', 'مرور پیشرفت')}
             <ArrowUpRight size={15} strokeWidth={2} aria-hidden="true" />
           </a>
         </section>

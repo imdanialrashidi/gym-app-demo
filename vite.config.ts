@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 /**
- * GitHub Pages project-site default. Override VITE_BASE_PATH=/ when serving
- * from a user root site or a custom domain.
+ * Served from the root of https://gym-app-demo.danialrashidi.ir/.
+ * Set VITE_BASE_PATH=/gym-app-demo/ for the bare github.io project-site URL.
  */
-const DEFAULT_BASE = '/gym-app-demo/'
+const DEFAULT_BASE = '/'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '')

@@ -1,9 +1,9 @@
 {
-  "name": "rep-lab",
+  "name": "amirs-gym",
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "REP//LAB \u2014 a cinematic, frontend-only bodybuilding training demo.",
+  "description": "Amir's Gym — a cinematic, bilingual (Persian/English) bodybuilding training demo.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

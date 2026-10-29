@@ -5,16 +5,34 @@ import { hrefFor, useRoute } from '../lib/router'
 import { demoProfile } from '../demo/data'
 import { getUpNextProgram } from '../demo/selectors'
 import { useDemoState, useElapsedSeconds, useStartTraining } from '../demo/AppState'
+import { useI18n } from '../lib/i18n'
 import { formatTimer } from '../lib/time'
 
 export function Wordmark({ className = '' }: { className?: string }) {
+  const { t } = useI18n()
   return (
     <span className={`wordmark ${className}`}>
       <span aria-hidden="true">
-        REP<span className="wordmark__slash">//</span>LAB
+        {t('AMIR’S ', 'باشگاه ')}
+        <span className="wordmark__slash">{t('GYM', 'امیر')}</span>
       </span>
       <span className="wordmark__dot" aria-hidden="true" />
     </span>
+  )
+}
+
+export function LangToggle({ className = '' }: { className?: string }) {
+  const { lang, toggleLang, t } = useI18n()
+  return (
+    <button
+      type="button"
+      className={`lang-toggle ${className}`}
+      onClick={toggleLang}
+      aria-label={t('Switch to Persian', 'تغییر به انگلیسی')}
+      lang={lang === 'fa' ? 'en' : 'fa'}
+    >
+      {lang === 'fa' ? 'EN' : 'فا'}
+    </button>
   )
 }
 
@@ -25,12 +43,16 @@ export function SettingsButton({
   onOpenSettings: () => void
   className?: string
 }) {
+  const { t } = useI18n()
   return (
     <button
       type="button"
       className={`avatar-button ${className}`}
       onClick={onOpenSettings}
-      aria-label="Open demo settings and credits for DR"
+      aria-label={t(
+        `Open demo settings and credits for ${demoProfile.initials}`,
+        `باز کردن تنظیمات و اعتبارات دمو برای ${demoProfile.initials}`,
+      )}
     >
       <span className="avatar-button__initials" aria-hidden="true">
         {demoProfile.initials}
@@ -51,24 +73,38 @@ export function MobilePageHeader({
   onOpenSettings,
   variant = 'solid',
 }: MobilePageHeaderProps) {
+  const { t } = useI18n()
   return (
     <header className={`mobile-header ${variant === 'overlay' ? 'mobile-header--overlay' : ''}`}>
-      <a href={hrefFor('/')} className="brand-link" aria-label="REP//LAB home">
+      <a
+        href={hrefFor('/')}
+        className="brand-link"
+        aria-label={t('Amir’s Gym home', 'خانهٔ باشگاه امیر')}
+      >
         <Wordmark />
       </a>
       <span className="mobile-header__section" aria-hidden="true">
         {section}
       </span>
-      <SettingsButton onOpenSettings={onOpenSettings} />
+      <div className="mobile-header__actions">
+        <LangToggle />
+        <SettingsButton onOpenSettings={onOpenSettings} />
+      </div>
     </header>
   )
 }
 
-const primaryLinks: Array<{ name: RouteName; path: '/' | '/workouts' | '/progress'; label: string }> = [
-  { name: 'home', path: '/', label: 'Home' },
-  { name: 'workouts', path: '/workouts', label: 'Train' },
-  { name: 'progress', path: '/progress', label: 'Progress' },
+const primaryLinks: Array<{ name: RouteName; path: '/' | '/workouts' | '/progress' }> = [
+  { name: 'home', path: '/' },
+  { name: 'workouts', path: '/workouts' },
+  { name: 'progress', path: '/progress' },
 ]
+
+const linkLabels: Record<string, [string, string]> = {
+  home: ['Home', 'خانه'],
+  workouts: ['Train', 'تمرین'],
+  progress: ['Progress', 'پیشرفت'],
+}
 
 export function DesktopNav() {
   const route = useRoute()
@@ -76,18 +112,24 @@ export function DesktopNav() {
   const startTraining = useStartTraining()
   const elapsed = useElapsedSeconds(state.active)
   const nextProgram = getUpNextProgram(state)
+  const { t } = useI18n()
 
   return (
     <header className="desktop-nav">
       <div className="desktop-nav__inner">
-        <a href={hrefFor('/')} className="desktop-nav__brand" aria-label="REP//LAB home">
+        <a
+          href={hrefFor('/')}
+          className="desktop-nav__brand"
+          aria-label={t('Amir’s Gym home', 'خانهٔ باشگاه امیر')}
+        >
           <Wordmark />
-          <span className="desktop-nav__caption">Strength division</span>
+          <span className="desktop-nav__caption">{t('Strength division', 'بخش قدرتی')}</span>
         </a>
 
-        <nav className="desktop-nav__links" aria-label="Primary navigation">
+        <nav className="desktop-nav__links" aria-label={t('Primary navigation', 'ناوبری اصلی')}>
           {primaryLinks.map((link) => {
             const active = route.name === link.name
+            const [en, fa] = linkLabels[link.name]
             return (
               <a
                 key={link.path}
@@ -95,7 +137,7 @@ export function DesktopNav() {
                 className={`desktop-nav__link ${active ? 'is-active' : ''}`}
                 aria-current={active ? 'page' : undefined}
               >
-                {link.label}
+                {t(en, fa)}
                 {active ? (
                   <motion.span
                     className="desktop-nav__indicator"
@@ -111,14 +153,19 @@ export function DesktopNav() {
         <div className="desktop-nav__actions">
           <span className="desktop-nav__status">
             <span className="status-dot" aria-hidden="true" />
-            {state.active ? `LIVE / ${formatTimer(elapsed)}` : 'DEMO / LOCAL'}
+            {state.active
+              ? `${t('LIVE', 'زنده')} / ${formatTimer(elapsed)}`
+              : t('DEMO / LOCAL', 'دمو / محلی')}
           </span>
+          <LangToggle />
           <button
             type="button"
             className="btn btn--lime btn--compact"
             onClick={() => startTraining(state.active?.programId ?? nextProgram.id)}
           >
-            {state.active ? 'Resume session' : 'Start training'}
+            {state.active
+              ? t('Resume session', 'ادامهٔ جلسه')
+              : t('Start training', 'شروع تمرین')}
             <ArrowUpRight size={15} strokeWidth={2.4} aria-hidden="true" />
           </button>
         </div>
@@ -130,24 +177,25 @@ export function DesktopNav() {
 const navItems: Array<{
   name: RouteName
   path: '/' | '/workouts' | '/progress'
-  label: string
   Icon: typeof Home
 }> = [
-  { name: 'home', path: '/', label: 'Home', Icon: Home },
-  { name: 'workouts', path: '/workouts', label: 'Train', Icon: Dumbbell },
-  { name: 'progress', path: '/progress', label: 'Progress', Icon: BarChart3 },
+  { name: 'home', path: '/', Icon: Home },
+  { name: 'workouts', path: '/workouts', Icon: Dumbbell },
+  { name: 'progress', path: '/progress', Icon: BarChart3 },
 ]
 
 export function MobileBottomNav() {
   const route = useRoute()
   const { state } = useDemoState()
   const hasActiveSession = Boolean(state.active)
+  const { t } = useI18n()
 
   return (
-    <nav className="mobile-nav" aria-label="Primary mobile navigation">
+    <nav className="mobile-nav" aria-label={t('Primary mobile navigation', 'ناوبری اصلی موبایل')}>
       <div className="mobile-nav__inner">
-        {navItems.map(({ name, path, label, Icon }) => {
+        {navItems.map(({ name, path, Icon }) => {
           const active = route.name === name
+          const [en, fa] = linkLabels[name]
           return (
             <a
               key={path}
@@ -170,10 +218,13 @@ export function MobileBottomNav() {
                   className="mobile-nav__icon"
                 />
                 {name === 'workouts' && hasActiveSession ? (
-                  <span className="mobile-nav__live-dot" aria-label="Workout in progress" />
+                  <span
+                    className="mobile-nav__live-dot"
+                    aria-label={t('Workout in progress', 'تمرین در جریان')}
+                  />
                 ) : null}
               </span>
-              <span className="mobile-nav__label">{label}</span>
+              <span className="mobile-nav__label">{t(en, fa)}</span>
             </a>
           )
         })}

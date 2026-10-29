@@ -1,9 +1,9 @@
-# Deploying REP//LAB to GitHub Pages
+# Deploying Amir’s Gym to GitHub Pages
 
-This project is configured for a **GitHub Pages project site** at:
+This project is configured for a **GitHub Pages custom domain** at:
 
 ```text
-https://imdanialrashidi.github.io/gym-app-demo/
+https://gym-app-demo.danialrashidi.ir/
 ```
 
 Repository: `imdanialrashidi/gym-app-demo`
@@ -20,7 +20,9 @@ In the GitHub repository:
 2. Under **Build and deployment**, choose **Source: GitHub Actions**.
 3. Do not choose “Deploy from a branch”; the committed workflow builds and uploads `dist/`.
 4. Confirm `main` is the default branch under **Settings → General**.
-5. Actions must be enabled for the repository. No personal access token is needed.
+5. Set **Custom domain** to `gym-app-demo.danialrashidi.ir` (the committed `public/CNAME`
+   keeps it in the artifact) and enable **Enforce HTTPS**.
+6. Actions must be enabled for the repository. No personal access token is needed.
 
 The workflow uses the automatically provided `GITHUB_TOKEN` with these permissions:
 
@@ -38,38 +40,42 @@ The workflow [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) r
 To launch a deployment manually:
 
 1. Open **Actions**.
-2. Select **Deploy REP//LAB to GitHub Pages**.
+2. Select **Deploy Amir’s Gym to GitHub Pages**.
 3. Choose **Run workflow**, select `main`, and confirm.
 4. Open the completed `github-pages` environment deployment to get the site URL.
 
 Expected URL:
 
 ```text
-https://imdanialrashidi.github.io/gym-app-demo/
+https://gym-app-demo.danialrashidi.ir/
 ```
 
 ## 3. Base path behavior
 
-Vite's default base is `/gym-app-demo/`. The workflow computes the project-site base from the
-repository name unless a repository variable overrides it:
+The site is served from the **root** of the custom domain, so Vite’s base is `/`:
 
-```yaml
-VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || format('/{0}/', github.event.repository.name) }}
-```
+- `vite.config.ts` defaults to `/`.
+- The workflow pins `VITE_BASE_PATH: /` so the deployed HTML references `/assets/...`,
+  `/media/...` and `/favicon.svg` at the domain root.
 
-For a **root site** or **custom domain**:
+### Why this matters
 
-1. Go to **Settings → Secrets and variables → Actions → Variables**.
-2. Add `VITE_BASE_PATH` with value `/`.
-3. Re-run the deploy workflow.
-4. Configure the custom domain under **Settings → Pages → Custom domain**.
-5. Update the absolute Open Graph/Twitter image URLs in `index.html` to the new origin.
+A base of `/gym-app-demo/` on a custom-domain root makes every asset request 404
+(`https://gym-app-demo.danialrashidi.ir/gym-app-demo/assets/index-*.js`), which renders a blank
+page. That was the production bug fixed here.
 
-For local development with a root base:
+### Serving the bare github.io project URL
+
+To preview the `imdanialrashidi.github.io/gym-app-demo/` path instead, build with:
 
 ```sh
-VITE_BASE_PATH=/ npm run dev
-VITE_BASE_PATH=/ npm run build
+VITE_BASE_PATH=/gym-app-demo/ npm run build
+```
+
+The default (`/`) already matches local development:
+
+```sh
+npm run dev
 ```
 
 ## 4. Build contract
@@ -90,10 +96,10 @@ The artifact step uploads `./dist` including `.nojekyll`.
 Navigation uses hash routes:
 
 ```text
-/gym-app-demo/#/
-/gym-app-demo/#/workouts
-/gym-app-demo/#/progress
-/gym-app-demo/#/session
+/#/
+/#/workouts
+/#/progress
+/#/session
 ```
 
 The fragment is never sent to GitHub Pages, so browser refresh and direct links resolve to
@@ -103,7 +109,8 @@ The fragment is never sent to GitHub Pages, so browser refresh and direct links 
 
 After the first successful deployment:
 
-- Load `/gym-app-demo/` and verify the hero photograph loads.
+- Load `/` and verify the hero photograph loads.
+- Switch between فارسی and EN with the header toggle and refresh: the choice persists.
 - Open `#/workouts`, refresh, and verify the route survives.
 - Open `#/progress`, refresh, and verify lazy-loaded JavaScript and the chart render.
 - Start a workout, log a set, refresh, and verify the active session returns.

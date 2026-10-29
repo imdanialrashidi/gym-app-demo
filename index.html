@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="fa" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -10,33 +10,49 @@
     <meta name="color-scheme" content="dark" />
     <meta
       name="description"
-      content="REP//LAB — a cinematic, mobile-first bodybuilding training demo. Build beyond limits with Push, Pull and Legs protocols, live set logging and local progress analytics."
+      content="باشگاه امیر — یک دموی سینمایی تمرین بدنسازی. برنامه‌های فشار، کشش و پا با ثبت زندهٔ ست‌ها و تحلیل پیشرفت محلی. Amir’s Gym is available in English too."
     />
-    <meta name="application-name" content="REP//LAB" />
-    <meta name="apple-mobile-web-app-title" content="REP//LAB" />
+    <meta name="application-name" content="Amir’s Gym" />
+    <meta name="apple-mobile-web-app-title" content="Amir’s Gym" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <link rel="apple-touch-icon" href="%BASE_URL%media/icon-180.png" />
     <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+    <link rel="canonical" href="https://gym-app-demo.danialrashidi.ir/" />
+
+    <script>
+      // Apply the stored language before first paint so the page never flashes LTR.
+      try {
+        var lang = window.localStorage.getItem('amirs-gym-lang-v1') === 'en' ? 'en' : 'fa'
+        document.documentElement.lang = lang
+        document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr'
+      } catch (error) {
+        /* Storage blocked: the default Persian/RTL document stands. */
+      }
+    </script>
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="REP//LAB — BUILD BEYOND LIMITS." />
+    <meta property="og:url" content="https://gym-app-demo.danialrashidi.ir/" />
+    <meta property="og:site_name" content="Amir’s Gym" />
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:title" content="باشگاه امیر — فراتر از حدها بساز." />
     <meta
       property="og:description"
-      content="A cinematic bodybuilding training demo. Push, pull and legs protocols with a live set log and progress that stays in your browser."
+      content="دموی سینمایی تمرین بدنسازی: برنامه‌های فشار، کشش و پا، ثبت زندهٔ ست و پیشرفتی که در مرورگر تو می‌ماند."
     />
-    <meta property="og:image" content="https://imdanialrashidi.github.io/gym-app-demo/media/hero-og.jpg" />
+    <meta property="og:image" content="https://gym-app-demo.danialrashidi.ir/media/hero-og.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="REP//LAB — BUILD BEYOND LIMITS." />
+    <meta name="twitter:title" content="باشگاه امیر — فراتر از حدها بساز." />
     <meta
       name="twitter:description"
-      content="A cinematic bodybuilding training demo. Train. Log. Progress."
+      content="دموی بدنسازی. تمرین کن، ثبت کن، پیشرفت کن. / Train. Log. Progress."
     />
-    <meta name="twitter:image" content="https://imdanialrashidi.github.io/gym-app-demo/media/hero-og.jpg" />
+    <meta name="twitter:image" content="https://gym-app-demo.danialrashidi.ir/media/hero-og.jpg" />
 
     <link
       rel="preload"
@@ -59,13 +75,15 @@
       fetchpriority="high"
     />
 
-    <title>REP//LAB — BUILD BEYOND LIMITS.</title>
+    <title>باشگاه امیر — فراتر از حدها بساز.</title>
   </head>
   <body>
     <div id="root"></div>
     <noscript>
-      <div style="padding: 2rem; color: #f5f6f2; background: #090b0a; font-family: sans-serif">
-        <strong>REP//LAB</strong> needs JavaScript enabled to train.
+      <div style="padding: 2rem; color: #f5f6f2; background: #090b0a; font-family: sans-serif" dir="rtl">
+        <strong>باشگاه امیر</strong> برای تمرین به جاوااسکریپت نیاز دارد.
+        <br />
+        <strong>Amir’s Gym</strong> needs JavaScript enabled to train.
       </div>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>

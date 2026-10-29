@@ -1,7 +1,9 @@
 {
-  "name": "REP//LAB — Build Beyond Limits.",
-  "short_name": "REP//LAB",
-  "description": "A cinematic bodybuilding training demo. Push, pull and legs protocols with a live set log and local progress.",
+  "name": "باشگاه امیر — Amir’s Gym",
+  "short_name": "باشگاه امیر",
+  "description": "Amir’s Gym — a cinematic bodybuilding training demo with Persian and English. Push, pull and legs protocols with a live set log and local progress.",
+  "lang": "fa",
+  "dir": "rtl",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -1,12 +1,15 @@
-# REP//LAB
+# Amir’s Gym
 
-**BUILD BEYOND LIMITS.**
+**فراتر از حدها بساز. / BUILD BEYOND LIMITS.**
 
-A photo-led, animation-driven bodybuilding training demo built as a mobile-first web app. It
-ships a cinematic dashboard, three complete Push/Pull/Legs programs, an interactive live workout
-logger, and local progress analytics — with no backend, accounts, or runtime secrets.
+A photo-led, animation-driven bodybuilding training demo built as a mobile-first, bilingual web
+app. It ships a cinematic dashboard, three complete Push/Pull/Legs programs, an interactive live
+workout logger, and local progress analytics — with no backend, accounts, or runtime secrets.
 
-> REP//LAB is a fictional product demo. Its training data, athlete, and records are sample data,
+The interface is Persian-first (RTL, Vazirmatn) with a full English version one tap away; the
+choice is saved in `localStorage`.
+
+> Amir’s Gym is a fictional product demo. Its training data, athlete, and records are sample data,
 > not medical or coaching advice. Finished sessions and active timer state live only in the
 > visitor’s browser via `localStorage`.
 
@@ -52,14 +55,14 @@ npm run dev
 Open:
 
 ```text
-http://localhost:5173/gym-app-demo/
+http://localhost:5173/
 ```
 
-The Vite dev server uses the GitHub Pages project base `/gym-app-demo/`. To work against a root
-site or a custom domain:
+The dev server serves the app from the root, matching the custom domain. To preview the bare
+GitHub Pages project path instead:
 
 ```sh
-VITE_BASE_PATH=/ npm run dev
+VITE_BASE_PATH=/gym-app-demo/ npm run dev
 ```
 
 ### Verification commands
@@ -74,20 +77,23 @@ npm run preview
 ```
 
 `npm run build` runs the TypeScript project build and emits the static site to `dist/`. The preview
-server uses the configured base:
+server serves it at:
 
 ```text
-http://localhost:4173/gym-app-demo/
+http://localhost:4173/
 ```
 
 ## GitHub Pages deployment
 
-The target repository is **`imdanialrashidi/gym-app-demo`**, so this is a project site and the
-expected URL is:
+The site is published to the custom domain:
 
 ```text
-https://imdanialrashidi.github.io/gym-app-demo/
+https://gym-app-demo.danialrashidi.ir/
 ```
+
+The build uses Vite’s base `/` (the workflow pins `VITE_BASE_PATH: /`). Building with
+`/gym-app-demo/` on a custom-domain root makes every asset 404 and the page render blank — if the
+domain ever goes white again, check that base first.
 
 The app uses **hash-based routing** (`#/workouts`, `#/progress`, `#/session`). Refreshing a deep
 link never requires a server-side rewrite.
@@ -99,8 +105,8 @@ link never requires a server-side rewrite.
 3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
 4. If this is the first deployment, open **Actions** and allow Actions to run; no secrets are
    required.
-5. Run the **Deploy REP//LAB to GitHub Pages** workflow automatically on a push to `main`, or
-   manually via **Actions → Deploy REP//LAB to GitHub Pages → Run workflow**.
+5. Run the **Deploy Amir’s Gym to GitHub Pages** workflow automatically on a push to `main`, or
+   manually via **Actions → Deploy Amir’s Gym to GitHub Pages → Run workflow**.
 6. The workflow publishes `dist/` with the official Pages actions and reports the page URL in the
    deployment environment.
 
@@ -109,24 +115,24 @@ least-privilege job permissions (`contents: read` for the build; `pages: write` 
 `id-token: write` only for deployment), pinned action commit SHAs, the `github-pages` environment,
 and a non-cancelling Pages concurrency group.
 
-The base path is derived from the repository name by default:
+The workflow pins the base to the custom-domain root:
 
 ```yaml
-VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || format('/{0}/', github.event.repository.name) }}
+VITE_BASE_PATH: /
 ```
 
-For a **user root site** (`<username>.github.io`) or a **custom domain**, create a repository
-variable under **Settings → Secrets and variables → Actions → Variables**:
+`public/CNAME` keeps `gym-app-demo.danialrashidi.ir` attached to the Pages artifact, and
+**Settings → Pages → Custom domain** should match it with HTTPS enforced.
 
-- Name: `VITE_BASE_PATH`
-- Value: `/`
+For a **user root site** (`<username>.github.io`) or a different **custom domain**, the base stays
+`/`; only the CNAME, the canonical/Open Graph URLs in `index.html`, and DNS change.
 
 Also update the absolute Open Graph image URLs in `index.html` if the public origin changes. See
 [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the full checklist and verification steps.
 
 ### Asset paths
 
-- Vite’s `base` is `/gym-app-demo/` by default and can be overridden with `VITE_BASE_PATH`.
+- Vite’s `base` is `/` by default and can be overridden with `VITE_BASE_PATH`.
 - Runtime image URLs come from `import.meta.env.BASE_URL`.
 - The hero images are preloaded with Vite’s `%BASE_URL%` substitution.
 - Font files are bundled by Vite with hashed URLs.

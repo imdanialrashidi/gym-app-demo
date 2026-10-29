@@ -1,4 +1,20 @@
+import type { Lang } from './i18n'
+
 export const DAY_MS = 86_400_000
+
+const LOCALES: Record<Lang, string> = { en: 'en-GB', fa: 'fa-IR-u-nu-latn' }
+
+const formatterCache = new Map<string, Intl.DateTimeFormat>()
+
+function dateFormatter(lang: Lang, options: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
+  const key = `${lang}|${JSON.stringify(options)}`
+  let formatter = formatterCache.get(key)
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(LOCALES[lang], options)
+    formatterCache.set(key, formatter)
+  }
+  return formatter
+}
 
 export function startOfDay(timestamp: number): number {
   const date = new Date(timestamp)
@@ -46,68 +62,52 @@ export function formatTimer(totalSeconds: number): string {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }
 
-export function formatMinutes(totalSeconds: number): string {
+export function formatMinutes(totalSeconds: number, lang: Lang = 'en'): string {
   const safe = Math.max(0, Math.floor(totalSeconds))
-  if (safe < 60) return '<1 min'
-  return `${Math.round(safe / 60)} min`
+  if (safe < 60) return lang === 'fa' ? 'کمتر از ۱ دقیقه' : '<1 min'
+  return lang === 'fa' ? `${Math.round(safe / 60)} دقیقه` : `${Math.round(safe / 60)} min`
 }
 
-export function formatVolumeKg(value: number, decimals = 0): string {
+export function formatVolumeKg(value: number, decimals = 0, lang: Lang = 'en'): string {
   if (!Number.isFinite(value)) return '0'
   if (value >= 1000) {
     const tonnes = value / 1000
-    return `${tonnes.toFixed(decimals > 0 ? decimals : 1)}T`
+    return `${tonnes.toFixed(decimals > 0 ? decimals : 1)}${lang === 'fa' ? ' تن' : 'T'}`
   }
-  return `${Math.round(value).toLocaleString('en-US')} KG`
+  return `${Math.round(value).toLocaleString('en-US')} ${lang === 'fa' ? 'کیلوگرم' : 'KG'}`
 }
 
 export function formatWeight(value: number): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(1)
 }
 
-const shortDateFormatter = new Intl.DateTimeFormat('en-GB', {
-  day: '2-digit',
-  month: 'short',
-})
-
-const weekdayShortFormatter = new Intl.DateTimeFormat('en-GB', {
-  weekday: 'short',
-})
-
-const weekdayNarrowFormatter = new Intl.DateTimeFormat('en-GB', {
-  weekday: 'narrow',
-})
-
-const fullDateFormatter = new Intl.DateTimeFormat('en-GB', {
-  weekday: 'short',
-  day: '2-digit',
-  month: 'short',
-})
-
-export function formatShortDate(timestamp: number): string {
-  return shortDateFormatter.format(timestamp).toUpperCase()
+export function formatShortDate(timestamp: number, lang: Lang = 'en'): string {
+  return dateFormatter(lang, { day: '2-digit', month: 'short' }).format(timestamp).toUpperCase()
 }
 
-export function formatWeekdayShort(timestamp: number): string {
-  return weekdayShortFormatter.format(timestamp).toUpperCase()
+export function formatWeekdayShort(timestamp: number, lang: Lang = 'en'): string {
+  return dateFormatter(lang, { weekday: 'short' }).format(timestamp).toUpperCase()
 }
 
-export function formatWeekdayNarrow(timestamp: number): string {
-  return weekdayNarrowFormatter.format(timestamp).toUpperCase()
+export function formatWeekdayNarrow(timestamp: number, lang: Lang = 'en'): string {
+  return dateFormatter(lang, { weekday: 'narrow' }).format(timestamp).toUpperCase()
 }
 
-export function formatFullDate(timestamp: number): string {
-  return fullDateFormatter.format(timestamp).toUpperCase().replace(',', ' /')
+export function formatFullDate(timestamp: number, lang: Lang = 'en'): string {
+  return dateFormatter(lang, { weekday: 'short', day: '2-digit', month: 'short' })
+    .format(timestamp)
+    .toUpperCase()
+    .replace(',', ' /')
 }
 
-export function formatHeroDate(timestamp: number): string {
-  return formatFullDate(timestamp)
+export function formatHeroDate(timestamp: number, lang: Lang = 'en'): string {
+  return formatFullDate(timestamp, lang)
 }
 
-export function relativeSessionDay(timestamp: number, now = Date.now()): string {
-  if (isSameDay(timestamp, now)) return 'TODAY'
-  if (isSameDay(timestamp, addCalendarDays(now, -1))) return 'YESTERDAY'
-  return formatShortDate(timestamp)
+export function relativeSessionDay(timestamp: number, now = Date.now(), lang: Lang = 'en'): string {
+  if (isSameDay(timestamp, now)) return lang === 'fa' ? 'امروز' : 'TODAY'
+  if (isSameDay(timestamp, addCalendarDays(now, -1))) return lang === 'fa' ? 'دیروز' : 'YESTERDAY'
+  return formatShortDate(timestamp, lang)
 }
 
 export function greetingForHour(hour: number): string {
@@ -116,9 +116,11 @@ export function greetingForHour(hour: number): string {
   return 'EVENING'
 }
 
-export function weekdayLabelsMonday(): string[] {
+export function weekdayLabelsMonday(lang: Lang = 'en'): string[] {
   const monday = startOfWeek(Date.now())
-  return Array.from({ length: 7 }, (_, index) => formatWeekdayNarrow(addCalendarDays(monday, index)))
+  return Array.from({ length: 7 }, (_, index) =>
+    formatWeekdayNarrow(addCalendarDays(monday, index), lang),
+  )
 }
 
 const relativeTimeFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -127,11 +129,17 @@ const relativeTimeFormatter = new Intl.DateTimeFormat('en-GB', {
   hour12: false,
 })
 
-export function formatRelativeDateTime(isoDate: string, now = Date.now()): string {
+export function formatRelativeDateTime(
+  isoDate: string,
+  now = Date.now(),
+  lang: Lang = 'en',
+): string {
   const timestamp = Date.parse(isoDate)
-  if (!Number.isFinite(timestamp)) return 'UNKNOWN DATE'
+  if (!Number.isFinite(timestamp)) return lang === 'fa' ? 'تاریخ نامشخص' : 'UNKNOWN DATE'
   const time = relativeTimeFormatter.format(timestamp)
-  if (isSameDay(timestamp, now)) return `TODAY / ${time}`
-  if (isSameDay(timestamp, addCalendarDays(now, -1))) return `YESTERDAY / ${time}`
-  return `${formatWeekdayShort(timestamp)} ${formatShortDate(timestamp)} / ${time}`
+  const today = lang === 'fa' ? 'امروز' : 'TODAY'
+  const yesterday = lang === 'fa' ? 'دیروز' : 'YESTERDAY'
+  if (isSameDay(timestamp, now)) return `${today} / ${time}`
+  if (isSameDay(timestamp, addCalendarDays(now, -1))) return `${yesterday} / ${time}`
+  return `${formatWeekdayShort(timestamp, lang)} ${formatShortDate(timestamp, lang)} / ${time}`
 }

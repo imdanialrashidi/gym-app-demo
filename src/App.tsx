@@ -4,6 +4,7 @@ import { DemoStateProvider } from './demo/AppState'
 import { DesktopNav, MobileBottomNav, Wordmark } from './components/Chrome'
 import { SettingsSheet } from './components/SettingsSheet'
 import { HomePage } from './pages/HomePage'
+import { I18nProvider, useI18n } from './lib/i18n'
 import { useRoute } from './lib/router'
 import type { RouteName } from './lib/router'
 
@@ -17,16 +18,17 @@ const SessionPage = lazy(() =>
   import('./pages/SessionPage').then((module) => ({ default: module.SessionPage })),
 )
 
-const PAGE_TITLES: Record<RouteName, string> = {
-  home: 'REP//LAB — Build Beyond Limits.',
-  workouts: 'Training — REP//LAB',
-  progress: 'Progress — REP//LAB',
-  session: 'Live Session — REP//LAB',
+const PAGE_TITLES: Record<RouteName, [string, string]> = {
+  home: ['Amir’s Gym — Build Beyond Limits.', 'باشگاه امیر — فراتر از حدها بساز.'],
+  workouts: ['Training — Amir’s Gym', 'تمرین — باشگاه امیر'],
+  progress: ['Progress — Amir’s Gym', 'پیشرفت — باشگاه امیر'],
+  session: ['Live Session — Amir’s Gym', 'جلسهٔ زنده — باشگاه امیر'],
 }
 
 function RouteLoader() {
+  const { t } = useI18n()
   return (
-    <div className="route-loader" role="status" aria-label="Loading">
+    <div className="route-loader" role="status" aria-label={t('Loading', 'در حال بارگذاری')}>
       <Wordmark />
       <span className="route-loader__line" aria-hidden="true" />
     </div>
@@ -37,16 +39,18 @@ function AppFrame() {
   const route = useRoute()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const showNavigation = route.name !== 'session'
+  const { lang, t } = useI18n()
 
   useEffect(() => {
-    document.title = PAGE_TITLES[route.name]
+    const [en, fa] = PAGE_TITLES[route.name]
+    document.title = lang === 'fa' ? fa : en
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-  }, [route.name])
+  }, [route.name, lang])
 
   return (
     <div className={`app app--${route.name}`}>
       <a className="skip-link" href="#main-content">
-        Skip to content
+        {t('Skip to content', 'رفتن به محتوا')}
       </a>
       {showNavigation ? <DesktopNav /> : null}
 
@@ -85,9 +89,11 @@ function AppFrame() {
 export default function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <DemoStateProvider>
-        <AppFrame />
-      </DemoStateProvider>
+      <I18nProvider>
+        <DemoStateProvider>
+          <AppFrame />
+        </DemoStateProvider>
+      </I18nProvider>
     </MotionConfig>
   )
 }

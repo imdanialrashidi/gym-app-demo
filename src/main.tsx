@@ -6,7 +6,7 @@ import './index.css'
 const root = document.getElementById('root')
 
 if (!root) {
-  throw new Error('REP//LAB root element was not found.')
+  throw new Error('Amir’s Gym root element was not found.')
 }
 
 createRoot(root).render(
