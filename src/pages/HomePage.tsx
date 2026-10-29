@@ -162,7 +162,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
   const greetingFa =
     greetingWord === 'MORNING' ? 'صبح بخیر' : greetingWord === 'AFTERNOON' ? 'عصر بخیر' : 'شب بخیر'
   const greeting = active
-    ? t('SESSION LIVE', 'جلسه در جریان است')
+    ? t('SESSION LIVE', 'جلسه فعال است')
     : t(
         `${greetingWord}, ${demoProfile.firstName.toUpperCase()}.`,
         `${greetingFa}، ${t(demoProfile.firstName, 'امیر')}.`,
@@ -247,7 +247,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
 
         <div className="mobile-home-header">
           <MobilePageHeader
-            section={t('LAB / 04', 'آزمایشگاه / 04')}
+            section={t('LAB / 04', 'سالن / 04')}
             onOpenSettings={onOpenSettings}
             variant="overlay"
           />
@@ -336,7 +336,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
                   </motion.button>
 
                   <a href={hrefFor('/workouts')} className="hero-secondary">
-                    <span>{t('View the lab', 'دیدن آزمایشگاه')}</span>
+                    <span>{t('View the lab', 'دیدن سالن')}</span>
                     <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
                   </a>
                 </div>
@@ -481,9 +481,9 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
                 )}
               />
               <div className="volume-panel__footer">
-                <span>{t('MON', 'دوش')}</span>
+                <span>{t('MON', 'دوشنبه')}</span>
                 <span>{t(`WEEK ${String(weekly.sessionsThisWeek).padStart(2, '0')}`, `هفته ${String(weekly.sessionsThisWeek).padStart(2, '0')}`)}</span>
-                <span>{t('SUN', 'یک')}</span>
+                <span>{t('SUN', 'یکشنبه')}</span>
               </div>
             </Reveal>
 
@@ -514,7 +514,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
                   ? t('Target met. Keep the edge.', 'هدف محقق شد. همین ریتم را نگه دار.')
                   : t(
                       `${Math.max(0, weekly.target - weekly.sessionsThisWeek)} session${weekly.target - weekly.sessionsThisWeek === 1 ? '' : 's'} to protect it.`,
-                      `${Math.max(0, weekly.target - weekly.sessionsThisWeek)} جلسه تا حفظ زنجیره مانده.`,
+                      `${Math.max(0, weekly.target - weekly.sessionsThisWeek)} جلسه برای حفظ زنجیره باقی مانده.`,
                     )}
               </p>
             </Reveal>
@@ -593,7 +593,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
               </h2>
             </div>
             <a href={hrefFor('/workouts')} className="text-action desktop-only-flex">
-              {t('VIEW ALL', 'همه')}
+              {t('VIEW ALL', 'همه را ببین')}
               <ArrowUpRight size={15} strokeWidth={2} aria-hidden="true" />
             </a>
           </div>
@@ -662,7 +662,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
             })}
           </div>
           <p className="rail-hint">
-            <span aria-hidden="true">{t('SWIPE', 'بکش')}</span>
+            <span aria-hidden="true">{t('SWIPE', 'سوایپ')}</span>
             <ArrowRight size={14} strokeWidth={1.8} aria-hidden="true" />
             {t('Three ways in. One standard.', 'سه راه ورود. یک استاندارد.')}
           </p>
@@ -689,7 +689,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
                 {t(motivation.note, 'یادداشت میدان / 004')}
               </p>
               <blockquote className="field-note__quote">
-                {t('DISCIPLINE', 'انتظام')}
+                {t('DISCIPLINE', 'نظم')}
                 <br />
                 {t('IS A', 'یک')} <em>{t('decision.', 'تصمیم است.')}</em>
                 <br />
@@ -724,7 +724,7 @@ export function HomePage({ onOpenSettings }: HomePageProps) {
                 <a href={hrefFor('/workouts')}>{t('Training', 'تمرین')}</a>
                 <a href={hrefFor('/progress')}>{t('Progress', 'پیشرفت')}</a>
                 <button type="button" onClick={onOpenSettings}>
-                  {t('Demo / credits', 'دمو / اعتبارها')}
+                  {t('Demo / credits', 'دمو / منابع')}
                 </button>
               </div>
             </div>

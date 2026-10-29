@@ -107,7 +107,7 @@ function RecentSessionRow({
         />
         <span className="activity-row__main">
           <span className="activity-row__name">
-            {t(`${program.label} protocol`, `پروتکل ${program.label}`)}
+            {t(`${program.label} protocol`, `برنامهٔ ${program.label}`)}
           </span>
           <span className="activity-row__date">
             {formatRelativeDateTime(session.completedAt, Date.now(), lang)}
@@ -228,13 +228,13 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
             <p className="page-lede">
               {t(
                 'The scale is noisy. The log isn’t. Track volume, consistency and the lifts that matter — one honest session at a time.',
-                'ترازو نویز دارد، دفتر ثبت نه. حجم، ثبات و حرکت‌هایی را که مهم‌اند ثبت کن — هر بار یک جلسهٔ صادقانه.',
+                'ترازو پرنوسان است، دفتر ثبت نه. حجم، ثبات و حرکت‌هایی را که مهم‌اند ثبت کن — هر بار یک جلسهٔ صادقانه.',
               )}
             </p>
             <div className="progress-intro__stamp" aria-hidden="true">
-              <span>{t('LOG', 'دفتر')}</span>
+              <span>{t('LOG', 'ثبت')}</span>
               <span>{String(allTime.totalSessions).padStart(2, '0')}</span>
-              <span>{t('ENTRIES', 'ثبت')}</span>
+              <span>{t('ENTRIES', 'مورد')}</span>
             </div>
           </Reveal>
         </div>
@@ -431,7 +431,7 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                 </p>
                 <h2 id="consistency-heading" className="section-title">
                   {t('CONSISTENCY ', 'ثبات ')}
-                  <em>{t('compounds.', 'جمع می‌شود.')}</em>
+                  <em>{t('compounds.', 'ضرب می‌شود.')}</em>
                 </h2>
               </div>
               <span className="section-heading__aside">
@@ -460,7 +460,7 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
               </div>
               <div className="consistency-feature__content">
                 <div className="consistency-feature__copy">
-                  <p className="micro-label">{t('SHOW UP. ADD UP.', 'حاضر شو. جمع کن.')}</p>
+                  <p className="micro-label">{t('SHOW UP. ADD UP.', 'حاضر شو. روی هم بگذار.')}</p>
                   <p className="consistency-feature__headline">
                     {weekly.activeDays}
                     <span>/7</span> {t('days of work', 'روز کار')}
@@ -585,7 +585,7 @@ export function ProgressPage({ onOpenSettings }: ProgressPageProps) {
                       <span className="record-card__unit">{t('KG', 'کیلوگرم')}</span>
                     </p>
                     <div className="record-card__foot">
-                      <span>{t('ALL-TIME', 'مجموع')}</span>
+                      <span>{t('ALL-TIME', 'کل')}</span>
                       <span>
                         {record.progress > 0
                           ? t(

@@ -212,7 +212,7 @@ export const programFa: Record<ProgramId, ProgramCopy> = {
     kicker: 'چهارسر · همسترینگ · باسن · ساق',
     description:
       'اسکوات، هینج، پرس، تکرار. یک جلسهٔ پایین‌تنهٔ پرخرج با یک قانون ساده: هیچ تکرار شلخته‌ای.',
-    intensity: 'ساخت',
+    intensity: 'پایه‌ساز',
   },
 }
 
@@ -233,7 +233,7 @@ export const profileFa = {
 }
 
 export const motivationFa = {
-  quote: 'انتظام یک تصمیم است، نه یک حال‌وهوا.',
+  quote: 'نظم یک تصمیم است، نه یک حال‌وهوا.',
   note: 'یادداشت میدان / ۰۰۴',
 }
 

@@ -80,7 +80,7 @@ function SplitCard({
         <span className="split-card__scrim" aria-hidden="true" />
         <span className="split-card__top">
           <span className="split-card__index">
-            {t(`SPLIT ${position} / ${program.number}`, `برنامه ${position} از ${program.number}`)}
+            {t(`SPLIT ${position} / ${program.number}`, `برنامهٔ ${position} / ${program.number}`)}
           </span>
           {isActiveProgram ? <span className="tag tag--lime">{t('LIVE', 'زنده')}</span> : null}
         </span>
@@ -179,7 +179,7 @@ function SplitCard({
               <div className="split-card__cta-row">
                 <div>
                   <p className="micro-label">
-                    {t('DEMO LOAD / ADJUST AS NEEDED', 'وزن نمایشی / در صورت نیاز تنظیم کن')}
+                    {t('DEMO LOAD / ADJUST AS NEEDED', 'وزنهٔ نمونه / در صورت نیاز تنظیم کن')}
                   </p>
                   <p className="split-card__note">
                     {hasActiveSession
@@ -196,7 +196,7 @@ function SplitCard({
                 <button type="button" className="btn btn--lime" onClick={onStart}>
                   {hasActiveSession
                     ? t('Resume live session', 'ادامهٔ جلسهٔ زنده')
-                    : t(`Start ${program.label}`, `شروع ${program.label}`)}
+                    : t(`Start ${program.label}`, `شروع برنامهٔ ${program.label}`)}
                   <ArrowUpRight size={17} strokeWidth={2.2} aria-hidden="true" />
                 </button>
               </div>
@@ -267,7 +267,7 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
               <span className="section-kicker__index">02</span> {t('TRAINING DIVISION', 'بخش تمرین')}
             </p>
             <h1 className="page-title">
-              {t('THE', 'آزمایشگاهِ')} <em>{t('lab.', 'تمرین.')}</em>
+              {t('THE', '')} <em>{t('lab.', 'سالن.')}</em>
             </h1>
             <p className="page-lede">
               {t(
@@ -506,7 +506,7 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
           {filteredExercises.length === 0 ? (
             <div className="empty-state">
               <p className="empty-state__title">
-                {t('Nothing in that corner of the lab.', 'در این گوشه از آزمایشگاه چیزی نیست.')}
+                {t('Nothing in that corner of the lab.', 'در این گوشه از سالن چیزی نیست.')}
               </p>
               <p>
                 {t(
@@ -530,7 +530,7 @@ export function WorkoutsPage({ onOpenSettings }: WorkoutsPageProps) {
 
         <section className="workouts-footer shell">
           <div>
-            <span className="micro-label">{t('THE LAB RULE / 001', 'قانون آزمایشگاه / 001')}</span>
+            <span className="micro-label">{t('THE LAB RULE / 001', 'قانون سالن / 001')}</span>
             <p>
               {t(
                 'Never sacrifice a good rep for a heavier number.',

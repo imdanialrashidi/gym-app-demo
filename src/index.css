@@ -7035,16 +7035,17 @@ body {
 }
 
 [lang="fa"] .hero-title {
-  font-size: clamp(2.4rem, 11.5vw, 4.1rem);
+  font-size: clamp(2.2rem, 10.5vw, 3.9rem);
   font-weight: 800;
-  line-height: 1.22;
+  /* Stacked Persian lines collide at Latin display leading. */
+  line-height: 1.45;
   text-wrap: balance;
 }
 
 /* The line masks drive the reveal animation; padding keeps descenders inside. */
 [lang="fa"] .hero-title__line {
-  padding-bottom: 0.2em;
-  margin-bottom: -0.2em;
+  padding-bottom: 0.08em;
+  margin-bottom: 0;
 }
 
 [lang="fa"] .hero-title__line--serif {
@@ -7054,7 +7055,7 @@ body {
 [lang="fa"] .page-title {
   font-size: clamp(2.6rem, 10.5vw, 6rem);
   font-weight: 800;
-  line-height: 1.14;
+  line-height: 1.3;
 }
 
 [lang="fa"] .section-title,
@@ -7062,7 +7063,7 @@ body {
 [lang="fa"] .completion-title,
 [lang="fa"] .split-hero__title {
   font-weight: 800;
-  line-height: 1.22;
+  line-height: 1.35;
 }
 
 [lang="fa"] .split-hero__title {
@@ -7076,6 +7077,7 @@ body {
 [lang="fa"] .wordmark {
   font-size: 1.15rem;
   font-weight: 800;
+  line-height: 1.2;
 }
 
 [lang="fa"] .wordmark--footer {
@@ -7083,9 +7085,119 @@ body {
   line-height: 1.1;
 }
 
+/* The Latin design runs labels at 6–8px with tracking. Arabic script turns to mush
+   below ~11px, so the fa layer gets a legible floor and a wider line box. */
+[lang="fa"] :is(
+    .micro-label,
+    .section-kicker,
+    .section-heading__aside,
+    .split-card__index,
+    .split-card__focus,
+    .split-card__meta,
+    .split-exercise__meta,
+    .split-exercise__prescription,
+    .exercise-tile__top,
+    .exercise-tile__meta,
+    .exercise-sheet__photo-meta,
+    .exercise-sheet__stats dt,
+    .exercise-sheet__record span,
+    .library-count,
+    .progress-ranges__label,
+    .chart-panel__peak,
+    .chart-panel__legend,
+    .chart-tooltip span,
+    .chart-tooltip small,
+    .quick-stat > span,
+    .quick-stat small,
+    .consistency-bar__volume,
+    .consistency-bar__label,
+    .record-feature__lift,
+    .record-feature__footer,
+    .record-card__top,
+    .record-card__foot,
+    .activity-row__index,
+    .activity-row__date,
+    .activity-row__stats span,
+    .activity-exercise > span:nth-child(2),
+    .activity-exercise > span:nth-child(3),
+    .activity-footnote,
+    .progress-intro__stamp,
+    .session-visual__program,
+    .session-meta-row,
+    .completion-stats dt,
+    .completion-footer,
+    .session-cues li span,
+    .settings-athlete__meta,
+    .settings-stats dt,
+    .credits-list li,
+    .credits-fonts,
+    .settings-signoff,
+    .site-footer__legal,
+    .site-footer__links a,
+    .site-footer__links button,
+    .mobile-nav__label,
+    .desktop-nav__caption,
+    .desktop-nav__status,
+    .set-table__header,
+    .set-table__hint,
+    .session-complete-note,
+    .finish-summary__stats dt,
+    .finish-actions__hint,
+    .split-hero__stats,
+    .split-hero__kicker
+  ) {
+  font-size: 0.75rem;
+  line-height: 1.55;
+  font-weight: 600;
+}
+
+[lang="fa"] :is(
+    .tag,
+    .delta-chip,
+    .filter-chip,
+    .range-chip,
+    .home-hero__topline,
+    .home-hero__bottomline,
+    .on-deck-meta,
+    .on-deck-move__sets,
+    .on-deck-move__index,
+    .volume-panel__caption,
+    .volume-panel__footer,
+    .streak-panel__label,
+    .streak-panel__note,
+    .consistency-panel__footer,
+    .week-rhythm__label,
+    .home-program-card__meta,
+    .home-program-card__row,
+    .rail-hint,
+    .hero-cta__meta,
+    .hero-aside__live,
+    .hero-aside__ring-copy,
+    .hero-aside__footer span,
+    .split-hero__date,
+    .exercise-switcher__number,
+    .exercise-switcher__copy small,
+    .set-panel__prescription,
+    .set-field__unit,
+    .session-live,
+    .chart-panel__value-label,
+    .chart-panel__delta-copy,
+    .consistency-feature__streak,
+    .finish-summary__stats dd span,
+    .completion-stats dd span,
+    .credits-disclosure summary,
+    .credits-disclosure__count,
+    .session-discard,
+    .settings-signoff
+  ) {
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
 [lang="fa"] .field-note__quote {
   font-weight: 800;
-  line-height: 1.4;
+  line-height: 1.55;
 }
 
 /* Persian units are words, not glyphs: keep them on the display number's line. */

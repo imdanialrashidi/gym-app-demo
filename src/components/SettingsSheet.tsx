@@ -36,7 +36,7 @@ export function SettingsSheet({ open, onClose }: SettingsSheetProps) {
       open={open}
       onClose={onClose}
       eyebrow={t('PRIVATE DEMO / LOCAL STATE', 'دموی خصوصی / دادهٔ محلی')}
-      title={t('THE DEMO LAB', 'آزمایشگاه دمو')}
+      title={t('THE DEMO LAB', 'سالن دمو')}
       panelClassName="settings-sheet"
     >
       <div className="settings-intro">

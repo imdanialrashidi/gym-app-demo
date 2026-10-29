@@ -543,7 +543,7 @@ export function SessionPage() {
                 >
                   <div className="set-table__header" role="row">
                     <span role="columnheader">{t('SET', 'ست')}</span>
-                    <span role="columnheader">{t('WEIGHT / KG', 'وزن / کیلوگرم')}</span>
+                    <span role="columnheader">{t('WEIGHT / KG', 'وزن')}</span>
                     <span role="columnheader">{t('REPS', 'تکرار')}</span>
                     <span role="columnheader" className="sr-only">
                       {t('Log set', 'ثبت ست')}
@@ -765,7 +765,7 @@ export function SessionPage() {
         <div className="finish-summary">
           <div className="finish-summary__headline">
             <span className="micro-label">
-              {t(`${activeProgram.label} PROTOCOL`, `پروتکل ${activeProgram.label}`)}
+              {t(`${activeProgram.label} PROTOCOL`, `برنامهٔ ${activeProgram.label}`)}
             </span>
             <p>
               {allExercisesComplete

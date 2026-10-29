@@ -51,7 +51,7 @@ export function SettingsButton({
       onClick={onOpenSettings}
       aria-label={t(
         `Open demo settings and credits for ${demoProfile.initials}`,
-        `باز کردن تنظیمات و اعتبارات دمو برای ${demoProfile.initials}`,
+        `باز کردن تنظیمات دمو برای ${demoProfile.initials}`,
       )}
     >
       <span className="avatar-button__initials" aria-hidden="true">
@@ -123,7 +123,7 @@ export function DesktopNav() {
           aria-label={t('Amir’s Gym home', 'خانهٔ باشگاه امیر')}
         >
           <Wordmark />
-          <span className="desktop-nav__caption">{t('Strength division', 'بخش قدرتی')}</span>
+          <span className="desktop-nav__caption">{t('Strength division', 'بخش قدرت')}</span>
         </a>
 
         <nav className="desktop-nav__links" aria-label={t('Primary navigation', 'ناوبری اصلی')}>

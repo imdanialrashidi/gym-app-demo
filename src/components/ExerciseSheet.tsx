@@ -26,7 +26,7 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
     <BottomSheet
       open={open}
       onClose={onClose}
-      eyebrow={`${program.label} / ${t('EXERCISE INDEX', 'نمایهٔ حرکات')}`}
+      eyebrow={`${program.label} / ${t('EXERCISE INDEX', 'فهرست حرکات')}`}
       title={exercise.name}
       panelClassName="exercise-sheet"
     >
@@ -58,7 +58,7 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
             <dd>{exercise.reps}</dd>
           </div>
           <div>
-            <dt>{t('Demo load', 'بار نمونه')}</dt>
+            <dt>{t('Demo load', 'وزنهٔ نمونه')}</dt>
             <dd>
               {formatWeight(exercise.weight)} {t('kg', 'کیلوگرم')}
             </dd>
@@ -83,7 +83,7 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
 
         {best ? (
           <div className="exercise-sheet__record">
-            <span>{t('ALL-TIME BEST SET', 'بهترین ست تاریخ')}</span>
+            <span>{t('ALL-TIME BEST SET', 'بهترین ست تا امروز')}</span>
             <strong>
               {formatWeight(best)} {t('KG', 'کیلوگرم')}
             </strong>
@@ -100,7 +100,7 @@ export function ExerciseSheet({ exercise, program, open, onClose }: ExerciseShee
         >
           {state.active
             ? t('Resume live session', 'ادامهٔ جلسهٔ زنده')
-            : t(`Start ${program.label} protocol`, `شروع پروتکل ${program.label}`)}
+            : t(`Start ${program.label} protocol`, `شروع برنامهٔ ${program.label}`)}
           <ArrowUpRight size={17} strokeWidth={2.2} aria-hidden="true" />
         </button>
         <p className="exercise-sheet__fineprint">
