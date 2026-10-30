@@ -50,33 +50,32 @@ Expected URL:
 https://gym-app-demo.danialrashidi.ir/
 ```
 
-## 3. Base path behavior
+## 3. Site layout and base paths
 
-The site is served from the **root** of the custom domain, so Vite’s base is `/`:
+The artifact has two parts:
 
-- `vite.config.ts` defaults to `/`.
-- The workflow pins `VITE_BASE_PATH: /` so the deployed HTML references `/assets/...`,
-  `/media/...` and `/favicon.svg` at the domain root.
+```text
+/            static landing page from landing/
+/app/        React app built with Vite base /app/
+```
 
-### Why this matters
+The landing references app photography as `/app/media/...`. The app’s JS, CSS, fonts, and media
+all resolve under `/app/`. Keep those paths in sync when editing either side.
 
-A base of `/gym-app-demo/` on a custom-domain root makes every asset request 404
-(`https://gym-app-demo.danialrashidi.ir/gym-app-demo/assets/index-*.js`), which renders a blank
-page. That was the production bug fixed here.
+`npm run build:site` performs the composition:
+
+1. `vite build --base=/app/ --outDir=dist-app`
+2. copy `landing/` to `dist/`
+3. copy `dist-app/` to `dist/app/`
+4. copy `public/CNAME`, `public/.nojekyll`, `public/robots.txt`, and generate `sitemap.xml`
+
+There is no longer a root-level `/assets/` app bundle; the app bundle lives at `/app/assets/`.
 
 ### Serving the bare github.io project URL
 
-To preview the `imdanialrashidi.github.io/gym-app-demo/` path instead, build with:
-
-```sh
-VITE_BASE_PATH=/gym-app-demo/ npm run build
-```
-
-The default (`/`) already matches local development:
-
-```sh
-npm run dev
-```
+The custom domain is the supported target. Serving the site from
+`imdanialrashidi.github.io/gym-app-demo/` would require rebuilding both the landing links and the
+app base for `/gym-app-demo/`; the committed workflow targets the custom-domain root.
 
 ## 4. Build contract
 
@@ -85,38 +84,44 @@ The workflow runs the verified project commands:
 ```sh
 npm ci --no-audit --no-fund
 npm test
-npm run build
+npm run build:site
 ```
 
-`npm run build` executes `tsc -b && vite build` and writes the static site to `dist/`.
-The artifact step uploads `./dist` including `.nojekyll`.
+`npm run build:site` executes the TypeScript build and the app Vite build with base `/app/`, then
+composes the landing and app into `dist/`. The artifact step uploads `./dist` including hidden
+files such as `.nojekyll`.
 
 ## 5. Routing and refresh behavior
 
-Navigation uses hash routes:
+The app uses hash routes under `/app/`:
 
 ```text
-/#/
-/#/workouts
-/#/progress
-/#/session
+/app/#/
+/app/#/workouts
+/app/#/progress
+/app/#/session
 ```
 
 The fragment is never sent to GitHub Pages, so browser refresh and direct links resolve to
-`index.html` without needing a server rewrite or a `404.html` SPA fallback.
+`/app/index.html` without needing a server rewrite or a `404.html` SPA fallback. The landing is a
+static `/index.html` with in-page anchors.
 
 ## 6. Post-deploy verification
 
-After the first successful deployment:
+After a successful deployment:
 
-- Load `/` and verify the hero photograph loads.
-- Switch between فارسی and EN with the header toggle and refresh: the choice persists.
-- Open `#/workouts`, refresh, and verify the route survives.
-- Open `#/progress`, refresh, and verify lazy-loaded JavaScript and the chart render.
+- Load `/` and verify the landing hero photograph, fonts, and screenshots load.
+- Confirm the landing’s **ورود به اپ** buttons reach `/app/`.
+- Open `/app/`, verify the hero photograph loads, and switch between فارسی and EN: the choice
+  persists on refresh.
+- Open `/app/#/workouts`, refresh, and verify the route survives.
+- Open `/app/#/progress`, refresh, and verify lazy-loaded JavaScript and the chart render.
 - Start a workout, log a set, refresh, and verify the active session returns.
 - Finish the session and verify the recent activity row appears.
 - Use **Reset demo data** and verify seed data returns.
-- Test a phone-sized viewport at 390px and confirm the fixed tab bar and hero CTA do not overlap.
+- Click **دانلود از گیت‌هاب** on the landing and confirm the GitHub ZIP downloads.
+- Test a phone-sized viewport at 390px and confirm the landing CTAs, app fixed tab bar, and hero
+  content do not overlap.
 
 A successful local build does not prove the remote deployment succeeded. Confirm the workflow run
 and the page URL in GitHub before treating the site as published.

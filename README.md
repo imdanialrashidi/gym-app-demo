@@ -9,6 +9,18 @@ workout logger, and local progress analytics — with no backend, accounts, or r
 The interface is Persian-first (RTL, Vazirmatn) with a full English version one tap away; the
 choice is saved in `localStorage`.
 
+## Site layout
+
+The deployed site has two parts:
+
+| URL | What it is |
+| --- | --- |
+| `https://gym-app-demo.danialrashidi.ir/` | A static, Persian-first landing page that introduces the demo, its features, screenshots, and the download. |
+| `https://gym-app-demo.danialrashidi.ir/app/` | The React training app. Hash routes live under this path (`/app/#/workouts`, `/app/#/progress`, `/app/#/session`). |
+
+The landing is plain HTML/CSS/JS in [`landing/`](landing/) and is composed with the app by
+`npm run build:site`. The app itself still runs at `/` during local development.
+
 > Amir’s Gym is a fictional product demo. Its training data, athlete, and records are sample data,
 > not medical or coaching advice. Finished sessions and active timer state live only in the
 > visitor’s browser via `localStorage`.
@@ -40,6 +52,7 @@ top navigation and editorial side panel without compromising the mobile layout.
 - [Lucide React](https://lucide.dev/) icons
 - [Recharts](https://recharts.org/) on the lazy-loaded Progress route
 - [Vitest](https://vitest.dev/) for focused state, persistence, and selector tests
+- Dependency-free HTML/CSS/JS for the landing page in `landing/`
 
 No UI framework or analytics SDK is included. All fonts and photographs are served locally.
 
@@ -58,12 +71,15 @@ Open:
 http://localhost:5173/
 ```
 
-The dev server serves the app from the root, matching the custom domain. To preview the bare
-GitHub Pages project path instead:
+The dev server serves the app from the root. To preview the composed site (landing at `/`, app at
+`/app/`) exactly as GitHub Pages receives it:
 
 ```sh
-VITE_BASE_PATH=/gym-app-demo/ npm run dev
+npm run build:site
+npm run preview:site
 ```
+
+Open `http://localhost:4175/`.
 
 ### Verification commands
 
@@ -73,11 +89,12 @@ Run these from the repository root:
 npm run typecheck
 npm test
 npm run build
-npm run preview
+npm run build:site
 ```
 
-`npm run build` runs the TypeScript project build and emits the static site to `dist/`. The preview
-server serves it at:
+`npm run build` emits the app-only static build to `dist/`. `npm run build:site` builds the app
+with Vite base `/app/` into `dist-app/`, copies `landing/` to `dist/`, and places the app under
+`dist/app/`. The preview server for the app build serves it at:
 
 ```text
 http://localhost:4173/
@@ -91,16 +108,16 @@ The site is published to the custom domain:
 https://gym-app-demo.danialrashidi.ir/
 ```
 
-The build uses Vite’s base `/` (the workflow pins `VITE_BASE_PATH: /`). Building with
-`/gym-app-demo/` on a custom-domain root makes every asset 404 and the page render blank — if the
-domain ever goes white again, check that base first.
+The root is the landing page. The app is built with Vite base `/app/` and published at
+`https://gym-app-demo.danialrashidi.ir/app/`. The workflow runs `npm run build:site`, which builds
+both parts into `dist/`; the Pages artifact is that directory.
 
-The app uses **hash-based routing** (`#/workouts`, `#/progress`, `#/session`). Refreshing a deep
-link never requires a server-side rewrite.
+The app uses **hash-based routing** (`/app/#/workouts`, `/app/#/progress`, `/app/#/session`).
+Refreshing a deep link never requires a server-side rewrite.
 
 ### Required repository settings
 
-1. Push the repository to GitHub with `main` as the default branch (not done by this build).
+1. `main` is the default branch.
 2. Open the repository and go to **Settings → Pages**.
 3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
 4. If this is the first deployment, open **Actions** and allow Actions to run; no secrets are
@@ -115,29 +132,24 @@ least-privilege job permissions (`contents: read` for the build; `pages: write` 
 `id-token: write` only for deployment), pinned action commit SHAs, the `github-pages` environment,
 and a non-cancelling Pages concurrency group.
 
-The workflow pins the base to the custom-domain root:
-
-```yaml
-VITE_BASE_PATH: /
-```
-
 `public/CNAME` keeps `gym-app-demo.danialrashidi.ir` attached to the Pages artifact, and
 **Settings → Pages → Custom domain** should match it with HTTPS enforced.
 
-For a **user root site** (`<username>.github.io`) or a different **custom domain**, the base stays
-`/`; only the CNAME, the canonical/Open Graph URLs in `index.html`, and DNS change.
+For a **different custom domain**, update the landing’s canonical/Open Graph URLs in
+`landing/index.html`, the app’s canonical/OG URLs in `index.html`, the CNAME, and DNS. The Vite
+base stays `/app/` because the app lives under `/app/` on the deployed origin.
 
 Also update the absolute Open Graph image URLs in `index.html` if the public origin changes. See
 [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the full checklist and verification steps.
 
 ### Asset paths
 
-- Vite’s `base` is `/` by default and can be overridden with `VITE_BASE_PATH`.
-- Runtime image URLs come from `import.meta.env.BASE_URL`.
-- The hero images are preloaded with Vite’s `%BASE_URL%` substitution.
-- Font files are bundled by Vite with hashed URLs.
-- `public/.nojekyll` is published by the workflow with `include-hidden-files: true`.
-- `public/site.webmanifest` uses relative `start_url`, `scope`, and icon paths.
+- `landing/` references the app’s images at `/app/media/...`; the composed build guarantees they
+  exist.
+- The app is built with `--base=/app/`, so its JS, CSS, fonts, and media resolve under `/app/`.
+- `public/CNAME`, `public/.nojekyll`, and `public/robots.txt` are copied to the deployment root.
+- `sitemap.xml` is generated by `scripts/build-site.mjs` and lists `/` and `/app/`.
+- `public/site.webmanifest` uses relative `start_url`, `scope`, and icon paths under `/app/`.
 
 ## Architecture notes
 
@@ -151,6 +163,8 @@ src/
   demo/selectors.ts        weekly/streak/chart/record aggregation
   demo/AppState.tsx        provider, timer hook, start-training hook
   lib/                     base-aware media helpers, hash router, time formatting
+landing/                   static Persian landing page (HTML, CSS, JS, screenshots, fonts)
+scripts/build-site.mjs     composes dist/ from landing/ and the /app build
 public/media/              locally optimized AVIF/WebP/JPG photography + app icons
 ```
 
@@ -188,4 +202,5 @@ files are in `src/assets/fonts/`.
 - Frontend-only demo: no backend, authentication, payments, sync, or AI integration.
 - Data is per-browser and per-origin; clearing site data removes the demo state.
 - Sample records and history are fictional. The in-app workout plan is for demonstration only.
-- GitHub Pages deployment was prepared but not pushed or published from this workspace.
+- Published by GitHub Actions on pushes to `main`; a local build alone does not prove the remote
+  deployment succeeded.

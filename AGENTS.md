@@ -23,12 +23,16 @@ Run commands from the repository root:
 | Run locally | `npm run dev` |
 | Type check | `npm run typecheck` |
 | Unit tests | `npm test` |
-| Production build | `npm run build` |
-| Preview build | `npm run preview` |
+| App-only production build | `npm run build` |
+| Deployed-site build (landing + app) | `npm run build:site` |
+| Preview app build | `npm run preview` |
+| Preview composed site | `npm run preview:site` |
 
-The app is served from the root of the custom domain
-(`https://gym-app-demo.danialrashidi.ir/`). Use `VITE_BASE_PATH=/gym-app-demo/` only when building
-for the bare `imdanialrashidi.github.io/gym-app-demo/` project-site URL.
+The deployed site is a landing page at the root of the custom domain
+(`https://gym-app-demo.danialrashidi.ir/`) with the React demo at `/app/`. The landing lives in
+`landing/` as dependency-free HTML/CSS/JS. `npm run build:site` builds the app with Vite’s base
+`/app/`, then composes `dist/` from `landing/` and the app build. Keep `/app/` links and
+`/app/media/...` asset paths intact.
 
 Copy is bilingual: English strings are the source and every new string needs a Persian twin via
 `t('English', 'فارسی')` from `src/lib/i18n.tsx`. Persian layout runs RTL and uses Vazirmatn.
@@ -36,6 +40,8 @@ Copy is bilingual: English strings are the source and every new string needs a P
 ## Working rules
 
 - Keep the mobile 390px experience primary. Test at 320, 360, 390, 430, 768, and 1440px.
+- The landing page has its own visual language in `landing/`; do not add a framework or build
+  dependency to it. Keep it static and reduce motion through CSS/`prefers-reduced-motion`.
 - Preserve safe-area handling and do not place interactive content under the fixed mobile tab bar.
 - Demo state lives in `localStorage` under `rep-lab-demo-v1`. Never replace persistence with
   in-memory-only state or add a backend.

@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#090B0A" />
+    <meta name="color-scheme" content="dark" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <title>باشگاه امیر — فراتر از حدها بساز. | Amir’s Gym</title>
+    <meta
+      name="description"
+      content="باشگاه امیر؛ سه برنامهٔ فشار، کشش و پا با ثبت زندهٔ ست‌ها و آرشیو پیشرفت. بدون حساب کاربری، بدون سرور — همه‌چیز در مرورگر خودت. نسخهٔ نمایشی وب + سورس کامل روی گیت‌هاب."
+    />
+    <link rel="canonical" href="https://gym-app-demo.danialrashidi.ir/" />
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+    <link rel="apple-touch-icon" href="/app/media/icon-180.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gym-app-demo.danialrashidi.ir/" />
+    <meta property="og:site_name" content="Amir’s Gym" />
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:title" content="باشگاه امیر — فراتر از حدها بساز." />
+    <meta
+      property="og:description"
+      content="سه اسپلیت. یک لاگر زنده. آرشیوی از پیشرفتت. دموی وب، بدون حساب و سرور."
+    />
+    <meta property="og:image" content="https://gym-app-demo.danialrashidi.ir/assets/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="باشگاه امیر — فراتر از حدها بساز." />
+    <meta
+      name="twitter:description"
+      content="سه اسپلیت. یک لاگر زنده. آرشیوی از پیشرفتت. دموی وب، بدون حساب و سرور."
+    />
+    <meta name="twitter:image" content="https://gym-app-demo.danialrashidi.ir/assets/og.jpg" />
+
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="./assets/fonts/vazirmatn.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="./assets/fonts/anton.woff2"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href="/app/media/hero-wide-1440.avif"
+      imagesrcset="/app/media/hero-wide-960.avif 960w, /app/media/hero-wide-1440.avif 1440w, /app/media/hero-wide-1920.avif 1920w"
+      imagesizes="100vw"
+      media="(min-width: 768px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/avif"
+      href="/app/media/hero-mobile-960.avif"
+      imagesrcset="/app/media/hero-mobile-640.avif 640w, /app/media/hero-mobile-960.avif 960w, /app/media/hero-mobile-1280.avif 1280w"
+      imagesizes="100vw"
+      media="(max-width: 767px)"
+      fetchpriority="high"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./main.js" defer></script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Amir’s Gym",
+        "alternateName": "باشگاه امیر",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "url": "https://gym-app-demo.danialrashidi.ir/app/",
+        "downloadUrl": "https://github.com/imdanialrashidi/gym-app-demo/archive/refs/heads/main.zip",
+        "description": "A cinematic, bilingual Push/Pull/Legs training demo with a live set logger and local progress analytics.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": {
+          "@type": "Person",
+          "name": "Danial Rashidi",
+          "url": "https://github.com/imdanialrashidi"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="page-loader" aria-hidden="true">
+      <div class="page-loader__inner">
+        <span class="page-loader__brand">AMIR’S <em>GYM</em><i>.</i></span>
+        <span class="page-loader__line"><i></i></span>
+        <span class="page-loader__meta">LOADING THE WORK — 100%</span>
+      </div>
+    </div>
+
+    <a class="skip-link" href="#system">رفتن به محتوا</a>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"><i></i></div>
+    <div class="cursor" aria-hidden="true"><i></i></div>
+
+    <header class="nav" id="nav">
+      <a class="brand" href="#top" aria-label="باشگاه امیر، خانه">
+        <span class="brand__mark">AMIR’S <em>GYM</em><i>.</i></span>
+        <span class="brand__sub">STRENGTH DIVISION</span>
+      </a>
+
+      <nav class="nav__links" aria-label="منوی اصلی">
+        <a href="#manifesto">سیستم</a>
+        <a href="#system">داخل اپ</a>
+        <a href="#screens">تصاویر</a>
+        <a href="#splits">اسپلیت‌ها</a>
+        <a href="#download">دانلود</a>
+      </nav>
+
+      <div class="nav__actions">
+        <a
+          class="nav__github"
+          href="https://github.com/imdanialrashidi/gym-app-demo"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="ریپوی گیت‌هاب"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2.23c-3.21.7-3.89-1.36-3.89-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.79 1.07.79 2.16v3.2c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .7Z"
+            />
+          </svg>
+        </a>
+        <a class="btn btn--lime btn--nav" href="/app/">
+          <span>ورود به اپ</span>
+          <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 17 17 7M8 7h9v9" />
+          </svg>
+        </a>
+        <button
+          class="nav__burger"
+          type="button"
+          aria-label="باز کردن منو"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+      <div class="mobile-menu__top">
+        <span class="brand__mark">AMIR’S <em>GYM</em><i>.</i></span>
+        <button class="mobile-menu__close" type="button" aria-label="بستن منو">
+          <span></span><span></span>
+        </button>
+      </div>
+      <nav class="mobile-menu__links" aria-label="منوی موبایل">
+        <a href="#manifesto" data-menu-link><span>01</span>سیستم</a>
+        <a href="#system" data-menu-link><span>02</span>داخل اپ</a>
+        <a href="#screens" data-menu-link><span>03</span>تصاویر</a>
+        <a href="#splits" data-menu-link><span>04</span>اسپلیت‌ها</a>
+        <a href="#download" data-menu-link><span>05</span>دانلود</a>
+      </nav>
+      <div class="mobile-menu__foot">
+        <a class="btn btn--lime" href="/app/">
+          ورود به اپ
+          <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 17 17 7M8 7h9v9" />
+          </svg>
+        </a>
+        <a
+          class="mobile-menu__repo"
+          href="https://github.com/imdanialrashidi/gym-app-demo"
+          target="_blank"
+          rel="noreferrer"
+          >github.com/imdanialrashidi/gym-app-demo</a
+        >
+      </div>
+    </div>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <picture class="hero__bg" aria-hidden="true">
+          <source
+            media="(min-width: 768px)"
+            type="image/avif"
+            srcset="/app/media/hero-wide-960.avif 960w, /app/media/hero-wide-1440.avif 1440w, /app/media/hero-wide-1920.avif 1920w"
+            sizes="100vw"
+          />
+          <source
+            media="(min-width: 768px)"
+            type="image/webp"
+            srcset="/app/media/hero-wide-1440.webp 1440w, /app/media/hero-wide-1920.webp 1920w"
+            sizes="100vw"
+          />
+          <source
+            type="image/avif"
+            srcset="/app/media/hero-mobile-640.avif 640w, /app/media/hero-mobile-960.avif 960w, /app/media/hero-mobile-1280.avif 1280w"
+            sizes="100vw"
+          />
+          <img
+            src="/app/media/hero-mobile-1280.webp"
+            alt=""
+            width="1920"
+            height="1280"
+            fetchpriority="high"
+          />
+        </picture>
+        <div class="hero__wash" aria-hidden="true"></div>
+        <div class="hero__ghost" aria-hidden="true">04</div>
+
+        <div class="hero__inner">
+          <div class="hero__copy">
+            <p class="eyebrow hero__eyebrow">
+              <span class="dot"></span>
+              <span>سیستم تمرین / نسخهٔ نمایشی</span>
+              <span class="eyebrow__sep">—</span>
+              <span class="latin">PPL / 2026</span>
+            </p>
+
+            <h1 id="hero-title" class="hero__title">
+              <span class="hero__line"><i>فراتر از</i></span>
+              <span class="hero__line"><i>حدها</i></span>
+              <span class="hero__line hero__line--lime"><i>بساز.</i></span>
+            </h1>
+
+            <p class="hero__en latin">BUILD <em>beyond</em> LIMITS.</p>
+
+            <p class="hero__lead">
+              سه اسپلیت پوش، پول و لگ. یک لاگ زنده برای هر ست. و آرشیوی که
+              پیشرفتت را به جای حافظه، به عدد می‌سپارد.
+              <span>بدون حساب. بدون سرور. روی مرورگر خودت.</span>
+            </p>
+
+            <div class="hero__actions">
+              <a class="btn btn--lime btn--lg magnetic" href="/app/">
+                <span>شروع تمرین</span>
+                <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 17 17 7M8 7h9v9" />
+                </svg>
+              </a>
+              <a
+                class="btn btn--ghost btn--lg btn--download"
+                href="https://github.com/imdanialrashidi/gym-app-demo/archive/refs/heads/main.zip"
+                target="_blank"
+                rel="noreferrer"
+                data-cursor="open"
+              >
+                <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16" />
+                </svg>
+                <span>دانلود از گیت‌هاب</span>
+                <small class="latin">ZIP / MAIN</small>
+              </a>
+            </div>
+
+            <dl class="hero__stats">
+              <div>
+                <dt>اسپلیت</dt>
+                <dd><span class="latin">03</span></dd>
+              </div>
+              <div>
+                <dt>حرکت</dt>
+                <dd><span class="latin">15</span></dd>
+              </div>
+              <div>
+                <dt>ست کاری</dt>
+                <dd><span class="latin">52</span></dd>
+              </div>
+              <div>
+                <dt>حساب کاربری</dt>
+                <dd><span class="latin">00</span></dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="hero__visual" aria-hidden="true">
+            <div class="hero__halo"></div>
+            <div class="hero__ring">
+              <svg viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="96" />
+                <circle cx="100" cy="100" r="78" />
+              </svg>
+              <span class="latin">EST.<br />2026</span>
+            </div>
+
+            <div class="phone phone--hero" data-tilt>
+              <span class="phone__notch"></span>
+              <div class="phone__screen">
+                <img
+                  src="./assets/screens/home-en.webp"
+                  alt="داشبورد باشگاه امیر روی موبایل"
+                  width="640"
+                  height="1392"
+                  fetchpriority="high"
+                />
+              </div>
+              <span class="phone__glare"></span>
+            </div>
+
+            <div class="float-card float-card--volume">
+              <span class="float-card__label latin">WEEKLY VOLUME</span>
+              <strong class="latin">13.1<small>T</small></strong>
+              <span class="float-card__delta latin">+1.6%</span>
+              <svg class="float-card__spark" viewBox="0 0 120 34" preserveAspectRatio="none">
+                <path
+                  d="M0 30 C12 30 14 11 27 11 S42 25 55 25 70 6 82 6 100 15 120 3"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+
+            <div class="float-card float-card--streak">
+              <span class="float-card__label latin">TRAINING STREAK</span>
+              <strong class="latin">12<small>WK</small></strong>
+              <span class="float-card__bars" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </span>
+            </div>
+
+            <span class="hero__caption latin">01 / HOME — LIVE DASHBOARD</span>
+          </div>
+        </div>
+
+        <div class="hero__foot">
+          <a class="scroll-cue" href="#manifesto">
+            <span>اسکرول کن</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 4v15m0 0 6-6m-6 6-6-6" />
+            </svg>
+          </a>
+          <span class="hero__coords latin">35.6892° N / 51.3890° E</span>
+          <span class="hero__note latin">THE WORK IS BELOW <i></i></span>
+        </div>
+      </section>
+
+      <div class="ticker" aria-hidden="true">
+        <div class="ticker__track">
+          <span>PUSH <i>✳</i> PULL <i>✳</i> LEGS <i>✳</i> TRAIN <i>✳</i> LOG <i>✳</i> PROVE <i>✳</i></span>
+          <span>PUSH <i>✳</i> PULL <i>✳</i> LEGS <i>✳</i> TRAIN <i>✳</i> LOG <i>✳</i> PROVE <i>✳</i></span>
+        </div>
+      </div>
+
+      <section class="manifesto section" id="manifesto" aria-labelledby="manifesto-title">
+        <div class="section__top">
+          <p class="section__label"><span class="dot"></span>01 / MANIFESTO</p>
+          <p class="section__meta latin">BUILT FOR THE WORK</p>
+        </div>
+
+        <div class="manifesto__grid">
+          <div class="manifesto__lead" data-reveal>
+            <h2 id="manifesto-title">
+              این یک اپ فیتنس نیست.<br />
+              یک <em>سیستم</em> است برای آدم‌هایی<br class="desktop-only" />
+              که عددها را جدی می‌گیرند.
+            </h2>
+            <p>
+              باشگاه امیر برنامه، اجرا و نتیجه را کنار هم می‌گذارد. اسپلیت
+              امروزت را باز می‌کنی، ست به ست جلو می‌روی و آخر هفته فقط یک
+              نمودار می‌بینی که می‌گوید کجا بودی. بدون شلوغی، بدون حساب
+              کاربری، بدون چیزی که حواست را پرت کند.
+            </p>
+          </div>
+
+          <ol class="principles" data-reveal style="--d: 120ms">
+            <li>
+              <span class="principles__num latin">01</span>
+              <div>
+                <h3>هر جلسه یک رکورد دارد.</h3>
+                <p>وزن، تکرار و ست‌ها همان‌جا ثبت می‌شوند؛ حتی اگر وسط تمرین صفحه را ببندی.</p>
+              </div>
+            </li>
+            <li>
+              <span class="principles__num latin">02</span>
+              <div>
+                <h3>پیشرفت را حدس نزن.</h3>
+                <p>حجم تمرین، رکوردهای شخصی و ثبات هفتگی، همه در یک نگاه.</p>
+              </div>
+            </li>
+            <li>
+              <span class="principles__num latin">03</span>
+              <div>
+                <h3>مال خودت می‌ماند.</h3>
+                <p>هیچ داده‌ای از مرورگرت خارج نمی‌شود. نه حساب، نه سرور، نه سینک اجباری.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="manifesto__stamp" aria-hidden="true">
+          <span class="latin">NO<br />SHORTCUTS</span>
+          <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" /></svg>
+        </div>
+      </section>
+
+      <section class="system section" id="system" aria-labelledby="system-title">
+        <div class="section__top">
+          <p class="section__label"><span class="dot"></span>02 / INSIDE THE APP</p>
+          <p class="section__meta latin">EVERYTHING YOU TOUCH</p>
+        </div>
+
+        <div class="system__head" data-reveal>
+          <h2 id="system-title" class="display latin">THE <em>lab.</em></h2>
+          <p>
+            ابزارهای یک جلسهٔ جدی، بدون هیچ چیز اضافه.
+            <span>فقط همان چیزی که بین ست‌ها لازم داری.</span>
+          </p>
+        </div>
+
+        <div class="bento">
+          <article class="card card--live" data-reveal data-tilt>
+            <div class="card__head">
+              <span class="card__index latin">01 / LIVE LOGGER</span>
+              <span class="card__badge"><i></i>SESSION LIVE</span>
+            </div>
+            <div class="card__copy">
+              <h3>ست را همین‌جا ببند.</h3>
+              <p>
+                وزن و تکرار هر ست قابل ویرایش است. تایمر، وقفه، ادامه و
+                ذخیرهٔ خودکار — بدون از دست دادن ریتم تمرین.
+              </p>
+            </div>
+
+            <div class="logger" aria-hidden="true">
+              <div class="logger__top">
+                <span class="logger__tag latin">PUSH / CHEST</span>
+                <span class="logger__time latin"><i></i>00:24:18</span>
+              </div>
+              <div class="logger__title">
+                <span class="latin">BARBELL BENCH PRESS</span>
+                <small class="latin">4 SETS · 8 REPS · 82.5 KG</small>
+              </div>
+              <div class="logger__sets">
+                <div class="logger__set is-done">
+                  <span class="latin">01</span>
+                  <strong class="latin">82.5 <small>KG</small></strong>
+                  <strong class="latin">8 <small>REPS</small></strong>
+                  <i class="check"><svg viewBox="0 0 24 24"><path d="m5 12 4.5 4.5L19 7" /></svg></i>
+                </div>
+                <div class="logger__set">
+                  <span class="latin">02</span>
+                  <strong class="latin">82.5 <small>KG</small></strong>
+                  <strong class="latin">8 <small>REPS</small></strong>
+                  <i class="check"><b></b></i>
+                </div>
+                <div class="logger__set">
+                  <span class="latin">03</span>
+                  <strong class="latin">82.5 <small>KG</small></strong>
+                  <strong class="latin">8 <small>REPS</small></strong>
+                  <i class="check"><b></b></i>
+                </div>
+              </div>
+              <div class="logger__bar"><i></i></div>
+            </div>
+            <span class="card__corner" aria-hidden="true"></span>
+          </article>
+
+          <article class="card card--progress" data-reveal data-tilt style="--d: 80ms">
+            <div class="card__head">
+              <span class="card__index latin">02 / PROGRESS</span>
+              <span class="card__micro latin">7D / 4W / 12W</span>
+            </div>
+            <div class="card__copy">
+              <h3>عددها را ببین.</h3>
+              <p>حجم، رکورد و ثبات. نه حس، نه حدس.</p>
+            </div>
+
+            <div class="metric" aria-hidden="true">
+              <div class="metric__value">
+                <strong class="latin">112.3<small>T</small></strong>
+                <span class="metric__delta latin">+7.4%</span>
+              </div>
+              <span class="metric__label latin">VOLUME MOVED / LAST 4 WEEKS</span>
+              <svg class="metric__chart" viewBox="0 0 440 180" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="area-lime" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#c7ff3c" stop-opacity=".24" />
+                    <stop offset="1" stop-color="#c7ff3c" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <g class="metric__grid">
+                  <path d="M0 40h440M0 80h440M0 120h440M0 160h440" />
+                  <path d="M110 0v180M220 0v180M330 0v180" />
+                </g>
+                <path
+                  class="metric__area"
+                  d="M0 138 C30 132 44 108 72 104 S120 112 148 92 200 60 230 66 286 96 314 78 366 38 398 34 424 26 440 22 V180 H0 Z"
+                  fill="url(#area-lime)"
+                />
+                <path
+                  class="metric__line"
+                  d="M0 138 C30 132 44 108 72 104 S120 112 148 92 200 60 230 66 286 96 314 78 366 38 398 34 424 26 440 22"
+                  fill="none"
+                  stroke="#c7ff3c"
+                  stroke-width="2.5"
+                />
+                <circle class="metric__dot" cx="440" cy="22" r="5" fill="#c7ff3c" />
+              </svg>
+              <div class="metric__axis latin">
+                <span>05 OCT</span><span>12 OCT</span><span>19 OCT</span><span>NOW</span>
+              </div>
+            </div>
+            <span class="card__corner" aria-hidden="true"></span>
+          </article>
+
+          <article class="card card--split" data-reveal data-tilt>
+            <div class="card__head">
+              <span class="card__index latin">03 / PPL ROTATION</span>
+              <span class="card__micro latin">3-DAY</span>
+            </div>
+            <div class="card__copy">
+              <h3>روزت را انتخاب کن.</h3>
+              <p>فشار، کشش یا پا. برنامهٔ کامل، همراه با نکتهٔ اجرای هر حرکت.</p>
+            </div>
+
+            <div class="mini-split" data-mini-split aria-hidden="true">
+              <div class="mini-split__media">
+                <img
+                  src="/app/media/push-800.avif"
+                  alt=""
+                  width="800"
+                  height="1000"
+                  loading="lazy"
+                  class="is-active"
+                  data-split-img="push"
+                />
+                <img
+                  src="/app/media/pull-800.avif"
+                  alt=""
+                  width="800"
+                  height="1000"
+                  loading="lazy"
+                  data-split-img="pull"
+                />
+                <img
+                  src="/app/media/legs-800.avif"
+                  alt=""
+                  width="800"
+                  height="1000"
+                  loading="lazy"
+                  data-split-img="legs"
+                />
+                <span class="mini-split__shade"></span>
+                <strong class="mini-split__big latin" data-split-name>PUSH</strong>
+              </div>
+              <div class="mini-split__bar">
+                <div class="mini-split__stats latin" data-split-stats>5 MOVES · 16 SETS · 52 MIN</div>
+                <div class="mini-split__tabs">
+                  <button type="button" class="is-active" data-split="push" tabindex="-1">PUSH</button>
+                  <button type="button" data-split="pull" tabindex="-1">PULL</button>
+                  <button type="button" data-split="legs" tabindex="-1">LEGS</button>
+                </div>
+              </div>
+            </div>
+            <span class="card__corner" aria-hidden="true"></span>
+          </article>
+
+          <article class="card card--lang" data-reveal data-tilt style="--d: 80ms">
+            <div class="card__head">
+              <span class="card__index latin">04 / BILINGUAL</span>
+              <span class="card__micro latin">FA / EN</span>
+            </div>
+            <div class="card__copy">
+              <h3>به زبان خودت.</h3>
+              <p>فارسیِ راست‌به‌چپ یا انگلیسی. یک تپ، بدون بارگذاری دوباره.</p>
+            </div>
+
+            <div class="lang-demo" data-lang-demo aria-hidden="true">
+              <span class="lang-demo__word is-fa">تمرین</span>
+              <span class="lang-demo__word is-en latin">TRAINING</span>
+              <button type="button" class="lang-demo__toggle" data-lang-toggle tabindex="-1">
+                <span class="is-active">فا</span><span>EN</span>
+              </button>
+            </div>
+            <span class="card__corner" aria-hidden="true"></span>
+          </article>
+
+          <article class="card card--local" data-reveal data-tilt style="--d: 160ms">
+            <div class="card__head">
+              <span class="card__index latin">05 / LOCAL-FIRST</span>
+              <span class="card__micro latin">NO CLOUD</span>
+            </div>
+            <div class="card__copy">
+              <h3>فقط روی دستگاه تو.</h3>
+              <p>جلسه‌ها در مرورگر خودت ذخیره می‌شوند. خروجی کارت مال توست.</p>
+            </div>
+
+            <div class="local" aria-hidden="true">
+              <div class="local__radar">
+                <i></i><i></i><i></i>
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3 4 7v5c0 4.4 3.4 7.6 8 9 4.6-1.4 8-4.6 8-9V7l-8-4Z" />
+                  <path d="m8.5 12 2.4 2.4 4.6-4.8" />
+                </svg>
+              </div>
+              <ul class="local__list latin">
+                <li><span>NO ACCOUNT</span><i></i></li>
+                <li><span>NO SERVER</span><i></i></li>
+                <li><span>NO TRACKING</span><i></i></li>
+              </ul>
+            </div>
+            <span class="card__corner" aria-hidden="true"></span>
+          </article>
+        </div>
+
+        <div class="exercise-rail" aria-hidden="true">
+          <div class="exercise-rail__track">
+            <span>BENCH PRESS</span><i>✳</i><span>DEADLIFT</span><i>✳</i><span>BACK SQUAT</span><i>✳</i>
+            <span>PULL-UP</span><i>✳</i><span>RDL</span><i>✳</i><span>SHOULDER PRESS</span><i>✳</i>
+            <span>LEG PRESS</span><i>✳</i><span>BARBELL ROW</span><i>✳</i>
+            <span>BENCH PRESS</span><i>✳</i><span>DEADLIFT</span><i>✳</i><span>BACK SQUAT</span><i>✳</i>
+            <span>PULL-UP</span><i>✳</i><span>RDL</span><i>✳</i><span>SHOULDER PRESS</span><i>✳</i>
+            <span>LEG PRESS</span><i>✳</i><span>BARBELL ROW</span><i>✳</i>
+          </div>
+        </div>
+      </section>
+
+      <section class="screens section" id="screens" aria-labelledby="screens-title">
+        <div class="section__top">
+          <p class="section__label"><span class="dot"></span>03 / THE SCREENS</p>
+          <p class="section__meta latin">390PX FIRST</p>
+        </div>
+
+        <div class="screens__head" data-reveal>
+          <h2 id="screens-title" class="display latin">THE <em>proof.</em></h2>
+          <p>
+            موبایل‌فرست، ساخته‌شده برای صفحه‌های کوچک و دست‌های عرق‌کرده.
+            <span>اسکرول کن؛ هر صفحه یک بخش از سیستم است.</span>
+          </p>
+          <div class="screens__controls">
+            <button type="button" class="round-btn" data-screen-prev aria-label="اسکرین‌شات قبلی">
+              <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" /></svg>
+            </button>
+            <button type="button" class="round-btn" data-screen-next aria-label="اسکرین‌شات بعدی">
+              <svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="screens__viewport" data-screens>
+          <figure class="screen-card">
+            <figcaption>
+              <span class="latin">01 / HOME</span>
+              <h3>داشبورد زنده</h3>
+            </figcaption>
+            <div class="phone">
+              <span class="phone__notch"></span>
+              <div class="phone__screen">
+                <img
+                  src="./assets/screens/home-en.webp"
+                  alt="صفحهٔ خانهٔ باشگاه امیر با هیروی سینمایی و دکمهٔ شروع تمرین"
+                  width="640"
+                  height="1392"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <p class="screen-card__note">هیروی تمام‌صفحه، هدف هفته و شروع جلسه در یک نگاه.</p>
+          </figure>
+
+          <figure class="screen-card">
+            <figcaption>
+              <span class="latin">02 / TRAIN</span>
+              <h3>اسپلیت امروز</h3>
+            </figcaption>
+            <div class="phone">
+              <span class="phone__notch"></span>
+              <div class="phone__screen">
+                <img
+                  src="./assets/screens/train-en.webp"
+                  alt="صفحهٔ تمرین با کارت اسپلیت روز و آمار حرکات"
+                  width="640"
+                  height="1392"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <p class="screen-card__note">سه برنامه، حرکت‌های بازشو و شروع فوری جلسه.</p>
+          </figure>
+
+          <figure class="screen-card">
+            <figcaption>
+              <span class="latin">03 / SESSION</span>
+              <h3>لاگر ست‌به‌ست</h3>
+            </figcaption>
+            <div class="phone">
+              <span class="phone__notch"></span>
+              <div class="phone__screen">
+                <img
+                  src="./assets/screens/session-en.webp"
+                  alt="صفحهٔ جلسهٔ زنده با تایمر، وزن، تکرار و ثبت ست"
+                  width="640"
+                  height="1392"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <p class="screen-card__note">تایمر زنده، وزن و تکرار قابل ویرایش و ثبت با یک تپ.</p>
+          </figure>
+
+          <figure class="screen-card">
+            <figcaption>
+              <span class="latin">04 / PROGRESS</span>
+              <h3>آرشیو عملکرد</h3>
+            </figcaption>
+            <div class="phone">
+              <span class="phone__notch"></span>
+              <div class="phone__screen">
+                <img
+                  src="./assets/screens/progress-en.webp"
+                  alt="صفحهٔ پیشرفت با نمودار حجم تمرین و رکوردها"
+                  width="640"
+                  height="1392"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <p class="screen-card__note">نمودار حجم، مقایسهٔ دوره‌ای و رکوردهای شخصی.</p>
+          </figure>
+
+          <figure class="screen-card">
+            <figcaption>
+              <span class="latin">05 / فارسی</span>
+              <h3>همان اپ، RTL</h3>
+            </figcaption>
+            <div class="phone">
+              <span class="phone__notch"></span>
+              <div class="phone__screen">
+                <img
+                  src="./assets/screens/home-fa.webp"
+                  alt="نسخهٔ فارسی راست‌به‌چپ صفحهٔ خانه"
+                  width="640"
+                  height="1392"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+            <p class="screen-card__note">فارسیِ اصیل با وزیرمتن، بدون افت کیفیت طراحی.</p>
+          </figure>
+        </div>
+
+        <div class="screens__foot">
+          <span class="latin">SWIPE / DRAG <i></i></span>
+          <a href="/app/" class="text-link">
+            همه را در اپ ببین
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+          </a>
+        </div>
+      </section>
+
+      <section class="splits section" id="splits" aria-labelledby="splits-title">
+        <div class="section__top">
+          <p class="section__label"><span class="dot"></span>04 / THE SPLITS</p>
+          <p class="section__meta latin">3-DAY ROTATION</p>
+        </div>
+
+        <div class="splits__head" data-reveal>
+          <h2 id="splits-title">
+            روزت را<br />
+            <em>انتخاب کن.</em>
+          </h2>
+          <p>سه روز. سه هدف. یک قانون: هیچ ست الکی.</p>
+        </div>
+
+        <div class="split-list">
+          <a class="split-row" href="/app/#/workouts" data-reveal>
+            <picture>
+              <source type="image/avif" srcset="/app/media/push-800.avif 800w, /app/media/push-1600.avif 1600w" sizes="100vw" />
+              <img src="/app/media/push-800.webp" alt="تمرین فشار" width="800" height="1000" loading="lazy" />
+            </picture>
+            <span class="split-row__scrim"></span>
+            <span class="split-row__num latin">01</span>
+            <span class="split-row__main">
+              <strong class="latin">PUSH</strong>
+              <span>سینه · سرشانه · پشت بازو</span>
+            </span>
+            <span class="split-row__meta latin">
+              <span>5 MOVES</span><span>16 SETS</span><span>52 MIN</span>
+            </span>
+            <span class="split-row__arrow">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+            </span>
+          </a>
+
+          <a class="split-row" href="/app/#/workouts" data-reveal>
+            <picture>
+              <source type="image/avif" srcset="/app/media/pull-800.avif 800w, /app/media/pull-1600.avif 1600w" sizes="100vw" />
+              <img src="/app/media/pull-800.webp" alt="تمرین کشش" width="800" height="1000" loading="lazy" />
+            </picture>
+            <span class="split-row__scrim"></span>
+            <span class="split-row__num latin">02</span>
+            <span class="split-row__main">
+              <strong class="latin">PULL</strong>
+              <span>پشت · سرشانهٔ پشتی · جلو بازو</span>
+            </span>
+            <span class="split-row__meta latin">
+              <span>5 MOVES</span><span>17 SETS</span><span>57 MIN</span>
+            </span>
+            <span class="split-row__arrow">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+            </span>
+          </a>
+
+          <a class="split-row" href="/app/#/workouts" data-reveal>
+            <picture>
+              <source type="image/avif" srcset="/app/media/legs-800.avif 800w, /app/media/legs-1600.avif 1600w" sizes="100vw" />
+              <img src="/app/media/legs-800.webp" alt="تمرین پا" width="800" height="1000" loading="lazy" />
+            </picture>
+            <span class="split-row__scrim"></span>
+            <span class="split-row__num latin">03</span>
+            <span class="split-row__main">
+              <strong class="latin">LEGS</strong>
+              <span>چهارسر · همسترینگ · باسن · ساق</span>
+            </span>
+            <span class="split-row__meta latin">
+              <span>5 MOVES</span><span>19 SETS</span><span>61 MIN</span>
+            </span>
+            <span class="split-row__arrow">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+            </span>
+          </a>
+        </div>
+
+        <div class="splits__foot">
+          <p>
+            برنامه‌ها هاردکد نیستند؛ وزن‌ها را در جلسه عوض می‌کنی و اپ همان
+            عدد را برایت نگه می‌دارد.
+          </p>
+          <a class="text-link" href="/app/#/workouts">
+            دیدن برنامه‌ها
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+          </a>
+        </div>
+      </section>
+
+      <section class="band" aria-label="بدون حساب کاربری">
+        <div class="band__inner">
+          <p class="band__fa">
+            نه حساب. نه سرور. <em>نه بهانه.</em>
+          </p>
+          <p class="band__en latin">NO ACCOUNT. NO CLOUD. NO EXCUSES.</p>
+          <div class="band__ring" aria-hidden="true">
+            <svg viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="98" />
+              <circle cx="100" cy="100" r="76" />
+              <path d="M100 2v196M2 100h196" />
+            </svg>
+            <span class="latin">LOCAL<br />ONLY</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="download section" id="download" aria-labelledby="download-title">
+        <div class="section__top">
+          <p class="section__label"><span class="dot"></span>05 / DOWNLOAD</p>
+          <p class="section__meta latin">FREE / OPEN SOURCE</p>
+        </div>
+
+        <div class="download__grid">
+          <div class="download__lead" data-reveal>
+            <p class="download__kicker latin">TIME TO WORK.</p>
+            <h2 id="download-title">
+              وقتشه<br />
+              <em>کار کنی.</em>
+            </h2>
+            <p>
+              همین حالا نسخهٔ وب را باز کن، یا کل سورس را از گیت‌هاب بردار و
+              روی دستگاه خودت اجرا کن. هر دو راه به یک جا می‌رسند: زیر
+              هالتر.
+            </p>
+            <div class="download__actions">
+              <a class="btn btn--lime btn--lg magnetic" href="/app/">
+                <span>ورود به اپ</span>
+                <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M7 17 17 7M8 7h9v9" />
+                </svg>
+              </a>
+              <a
+                class="btn btn--ghost btn--lg btn--download"
+                href="https://github.com/imdanialrashidi/gym-app-demo/archive/refs/heads/main.zip"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <svg class="download-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16" />
+                </svg>
+                <span>دانلود ZIP</span>
+                <small class="latin">GITHUB</small>
+              </a>
+            </div>
+            <p class="download__fine">
+              دموی فرانت‌اند. داده‌ها فقط در مرورگر تو ذخیره می‌شوند؛ هیچ
+              چیزی به سرور فرستاده نمی‌شود.
+            </p>
+          </div>
+
+          <aside class="repo-card" data-reveal style="--d: 120ms">
+            <div class="repo-card__top">
+              <span class="repo-card__gh">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.11.79-.25.79-.56v-2.23c-3.21.7-3.89-1.36-3.89-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.69.42.36.79 1.07.79 2.16v3.2c0 .31.21.68.8.56A11.5 11.5 0 0 0 12 .7Z" />
+                </svg>
+              </span>
+              <div>
+                <span class="repo-card__label latin">PUBLIC REPOSITORY</span>
+                <a
+                  class="repo-card__name latin"
+                  href="https://github.com/imdanialrashidi/gym-app-demo"
+                  target="_blank"
+                  rel="noreferrer"
+                  >imdanialrashidi / gym-app-demo</a
+                >
+              </div>
+              <span class="repo-card__status latin"><i></i>MAIN</span>
+            </div>
+
+            <dl class="repo-card__facts">
+              <div><dt class="latin">STACK</dt><dd class="latin">REACT 19 / VITE 8</dd></div>
+              <div><dt class="latin">BUILD</dt><dd class="latin">v1.0.0</dd></div>
+              <div><dt class="latin">ACCOUNT</dt><dd class="latin">NOT REQUIRED</dd></div>
+              <div><dt class="latin">DATA</dt><dd class="latin">BROWSER-LOCAL</dd></div>
+            </dl>
+
+            <div class="repo-card__code" dir="ltr">
+              <span class="latin"><i>$</i> npm ci</span>
+              <span class="latin"><i>$</i> npm run dev</span>
+              <span class="latin repo-card__code-muted">→ localhost:5173</span>
+            </div>
+
+            <div class="repo-card__actions">
+              <a
+                class="text-link"
+                href="https://github.com/imdanialrashidi/gym-app-demo"
+                target="_blank"
+                rel="noreferrer"
+              >
+                مشاهدهٔ ریپو
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+              <a
+                class="text-link"
+                href="https://github.com/imdanialrashidi/gym-app-demo/archive/refs/heads/main.zip"
+                target="_blank"
+                rel="noreferrer"
+              >
+                دانلود ZIP
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 20h16" />
+                </svg>
+              </a>
+            </div>
+          </aside>
+        </div>
+
+        <div class="download__strip">
+          <span class="latin">TRAIN.</span><i>✳</i><span class="latin">LOG.</span><i>✳</i
+          ><span class="latin">PROVE.</span><i>✳</i><span class="latin">REPEAT.</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <span class="brand__mark">AMIR’S <em>GYM</em><i>.</i></span>
+          <p>فراتر از حدها بساز.</p>
+        </div>
+        <nav class="footer__links" aria-label="لینک‌های پایین صفحه">
+          <div>
+            <span class="footer__label latin">APP</span>
+            <a href="/app/">خانه</a>
+            <a href="/app/#/workouts">تمرین</a>
+            <a href="/app/#/progress">پیشرفت</a>
+          </div>
+          <div>
+            <span class="footer__label latin">PROJECT</span>
+            <a href="https://github.com/imdanialrashidi/gym-app-demo" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="https://github.com/imdanialrashidi/gym-app-demo/archive/refs/heads/main.zip" target="_blank" rel="noreferrer">دانلود ZIP</a>
+            <a href="https://github.com/imdanialrashidi/gym-app-demo/blob/main/CREDITS.md" target="_blank" rel="noreferrer">اعتبارها</a>
+          </div>
+          <div>
+            <span class="footer__label latin">INFO</span>
+            <a href="#manifesto">درباره</a>
+            <a href="#download">شروع</a>
+            <a href="#top" data-top>بازگشت به بالا</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="footer__mark" aria-hidden="true">AMIR’S <em>GYM</em><i></i></div>
+
+      <div class="footer__bottom">
+        <span>© ۲۰۲۶ باشگاه امیر — ساختهٔ دانیال رشیدی.</span>
+        <span>عکاسی: Unsplash · فونت‌ها: OFL</span>
+        <span class="latin">FRONTEND-ONLY / NO BACKEND</span>
+      </div>
+    </footer>
+  </body>
+</html>
